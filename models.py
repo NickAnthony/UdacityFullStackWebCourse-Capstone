@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Date, create_engine
+from sqlalchemy import Column, String, Integer, Date, ForeignKey, create_engine
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import json, os
@@ -42,59 +42,66 @@ class Person(db.Model):
       'name': self.name,
       'catchphrase': self.catchphrase}
 
+
+'''
+Association table between movies and actors
+'''
+movie_actor_association = db.Table('order_items',
+    Column('actor_id', Integer, ForeignKey('actors.id'), primary_key=True),
+    Column('movie_id', Integer, ForeignKey('movies.id'), primary_key=True)
+)
 '''
 Actor
 Represents an actor with attributes name, age, and gender.
 '''
-# class Actor(db.Model):
-#   __tablename__ = 'actors'
-#
-#   id = Column(Integer, primary_key=True)
-#   name = db.Column(String, nullable=False)
-#   age = db.Column(Integer, nullable=False)
-#   gender = db.Column(String, nullable=False)
-#   # @TODO: Establish many to many relationship with movies
-#   # movies = db.relationship('Movie', backref='actor', lazy=True, cascade="all, delete")
-#
-#   def __init__(self, name, age, gender):
-#     self.name = name
-#     self.age = age
-#     self.gender = gender
-#
-#   def format(self):
-#     return {
-#       'id': self.id,
-#       'name': self.name,
-#       'age': self.age,
-#       'gender': self.gender}
-#
-#   def __repr__(self):
-#     return f'<Actor {self.id} {self.name}>'
+class Actor(db.Model):
+  __tablename__ = 'actors'
+
+  id = Column(Integer, primary_key=True)
+  name = Column(String, nullable=False)
+  age = Column(Integer, nullable=False)
+  gender = Column(String, nullable=False)
+  # Many to many relationship with movies
+  movies = db.relationship('Movie', secondary=movie_actor_association,
+      backref=db.backref('actors', lazy=True))
+
+  def __init__(self, name, age, gender):
+    self.name = name
+    self.age = age
+    self.gender = gender
+
+  def format(self):
+    return {
+      'id': self.id,
+      'name': self.name,
+      'age': self.age,
+      'gender': self.gender}
+
+  def __repr__(self):
+    return f'<Actor {self.id} {self.name}>'
 
 '''
 Movie
 Represents a movie with attributes title and release date.
 '''
-# class Movie(db.Model):
-#   __tablename__ = 'movies'
-#
-#   id = Column(Integer, primary_key=True)
-#   title = Column(String, nullable=False)
-#   # A datetime.date() object
-#   release_date = Column(Date, nullable=False)
-#   # @TODO: Establish many to many relationship with actors
-#   # actor_id = db.Column(db.Integer, db.ForeignKey('actors.id'),
-#   #                      nullable=False, default=1)
-#
-#   def __init__(self, title, release_date):
-#     self.title = title
-#     self.release_date = release_date
-#
-#   def format(self):
-#     return {
-#       'id': self.id,
-#       'title': self.title,
-#       'release_date': "{:%m/%d/%Y}".format(self.release_date)}
-#
-#   def __repr__(self):
-#     return f'<Movie {self.id} {self.title}>'
+class Movie(db.Model):
+  __tablename__ = 'movies'
+
+  id = Column(Integer, primary_key=True)
+  title = Column(String, nullable=False)
+  # A datetime.date() object
+  release_date = Column(Date, nullable=False)
+  # Has many to many relationship with actors, with backref `actors`
+
+  def __init__(self, title, release_date):
+    self.title = title
+    self.release_date = release_date
+
+  def format(self):
+    return {
+      'id': self.id,
+      'title': self.title,
+      'release_date': "{:%m/%d/%Y}".format(self.release_date)}
+
+  def __repr__(self):
+    return f'<Movie {self.id} {self.title}>'
