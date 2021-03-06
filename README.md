@@ -9,9 +9,22 @@ The Casting Agency models a company that is responsible for creating movies and 
 ### Models
 
 - Movies with attributes title and release date
-    - @TODO: Implement
+    - Table name: `movies`
+    - Columns:
+      - `id`: Integer, Primary key
+      - `title`: String, Movie title
+      - `release_date`: Date, Release date
+      - `actors`: Backref to actors table; list of actors in movie
 - Actors with attributes name, age and gender
-    - @TODO: Implement
+    - Table name: `actors`
+    - Columns:
+      - `name`: String, actor's name
+      - `age`: Integer, age
+      - `gender`: String, genter
+      - `movies`: Backref to movies table; list of movies actor is in
+- Association table between movies and actors
+    - Table name: `movie_actor_association`
+    - Associates many-to-many relationship between movies and actors
 
 ### Endpoints
 
