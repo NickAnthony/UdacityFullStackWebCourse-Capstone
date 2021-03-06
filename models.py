@@ -166,7 +166,7 @@ class Movie(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'release_date': "{:%m/%d/%Y}".format(self.release_date),
+            'release_date': "{:%Y-%m-%d}".format(self.release_date),
             'actors': formatted_actors
         }
 
