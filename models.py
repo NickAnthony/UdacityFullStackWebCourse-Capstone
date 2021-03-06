@@ -22,28 +22,6 @@ def setup_db(app, database_path=database_path):
     migrate = Migrate(app, db)
 
 '''
-Person
-Have title and release year
-'''
-class Person(db.Model):
-  __tablename__ = 'People'
-
-  id = Column(Integer, primary_key=True)
-  name = Column(String)
-  catchphrase = Column(String)
-
-  def __init__(self, name, catchphrase=""):
-    self.name = name
-    self.catchphrase = catchphrase
-
-  def format(self):
-    return {
-      'id': self.id,
-      'name': self.name,
-      'catchphrase': self.catchphrase}
-
-
-'''
 Association table between movies and actors
 '''
 movie_actor_association = db.Table('order_items',
@@ -57,10 +35,10 @@ Represents an actor with attributes name, age, and gender.
 class Actor(db.Model):
   __tablename__ = 'actors'
 
-  id = Column(Integer, primary_key=True)
-  name = Column(String, nullable=False)
-  age = Column(Integer, nullable=False)
-  gender = Column(String, nullable=False)
+  id = db.Column(db.Integer, primary_key=True)
+  name = db.Column(db.String, nullable=False)
+  age = db.Column(db.Integer, nullable=False)
+  gender = db.Column(db.String, nullable=False)
   # Many to many relationship with movies
   movies = db.relationship('Movie', secondary=movie_actor_association,
       backref=db.backref('actors', lazy=True))
@@ -87,10 +65,10 @@ Represents a movie with attributes title and release date.
 class Movie(db.Model):
   __tablename__ = 'movies'
 
-  id = Column(Integer, primary_key=True)
-  title = Column(String, nullable=False)
+  id = db.Column(db.Integer, primary_key=True)
+  title = db.Column(db.String, nullable=False)
   # A datetime.date() object
-  release_date = Column(Date, nullable=False)
+  release_date = db.Column(db.Date, nullable=False)
   # Has many to many relationship with actors, with backref `actors`
 
   def __init__(self, title, release_date):
