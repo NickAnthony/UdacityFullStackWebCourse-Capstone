@@ -33,53 +33,128 @@ Actor
 Represents an actor with attributes name, age, and gender.
 '''
 class Actor(db.Model):
-  __tablename__ = 'actors'
+    __tablename__ = 'actors'
 
-  id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String, nullable=False)
-  age = db.Column(db.Integer, nullable=False)
-  gender = db.Column(db.String, nullable=False)
-  # Many to many relationship with movies
-  movies = db.relationship('Movie', secondary=movie_actor_association,
-      backref=db.backref('actors', lazy=True))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String, nullable=False)
+    # Many to many relationship with movies
+    movies = db.relationship('Movie', secondary=movie_actor_association,
+                             backref=db.backref('actors', lazy=True))
 
-  def __init__(self, name, age, gender):
-    self.name = name
-    self.age = age
-    self.gender = gender
+    def __init__(self, name, age, gender):
+        self.name = name
+        self.age = age
+        self.gender = gender
 
-  def format(self):
-    return {
-      'id': self.id,
-      'name': self.name,
-      'age': self.age,
-      'gender': self.gender}
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'gender': self.gender
+        }
 
-  def __repr__(self):
-    return f'<Actor {self.id} {self.name}>'
+    '''
+    insert()
+        inserts a new model into the database
+        the model must have a unique id or null id
+        EXAMPLE
+            actor = Actor(name=req_name, age=req_age, gender=req_gender)
+            actor.insert()
+    '''
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    '''
+    delete()
+        deletes an existing model from the database
+        the model must exist in the database
+        EXAMPLE
+            actor = Actor(name=req_name, age=req_age, gender=req_gender)
+            actor.delete()
+    '''
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    '''
+    update()
+        updates an existing model in the database
+        the model must exist in the database
+        EXAMPLE
+            actor = Actor.query.filter(Actor.id == id).one_or_none()
+            actor.age = 28
+            actor.update()
+    '''
+    def update(self):
+        db.session.commit()
+
+    def __repr__(self):
+        return f'<Actor {self.id} {self.name}>'
 
 '''
 Movie
 Represents a movie with attributes title and release date.
 '''
 class Movie(db.Model):
-  __tablename__ = 'movies'
+    __tablename__ = 'movies'
 
-  id = db.Column(db.Integer, primary_key=True)
-  title = db.Column(db.String, nullable=False)
-  # A datetime.date() object
-  release_date = db.Column(db.Date, nullable=False)
-  # Has many to many relationship with actors, with backref `actors`
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    # A datetime.date() object
+    release_date = db.Column(db.Date, nullable=False)
+    # Has many to many relationship with actors, with backref `actors`
 
-  def __init__(self, title, release_date):
-    self.title = title
-    self.release_date = release_date
+    def __init__(self, title, release_date):
+        self.title = title
+        self.release_date = release_date
 
-  def format(self):
-    return {
-      'id': self.id,
-      'title': self.title,
-      'release_date': "{:%m/%d/%Y}".format(self.release_date)}
+    '''
+    insert()
+        inserts a new model into the database
+        the model must have a unique id or null id
+        EXAMPLE
+            movie = Movie(title=req_title, release_date=req_release_date)
+            movie.insert()
+    '''
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-  def __repr__(self):
-    return f'<Movie {self.id} {self.title}>'
+    '''
+    delete()
+        deletes an existing model from the database
+        the model must exist in the database
+        EXAMPLE
+            movie = Movie(title=req_title, release_date=req_release_date)
+            movie.delete()
+    '''
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    '''
+    update()
+        updates an existing model in the database
+        the model must exist in the database
+        EXAMPLE
+            movie = Movie.query.filter(Movie.id == id).one_or_none()
+            new_release_date = datetime.datetime.strptime("2022-01-15", "%Y-%m-%d").date()
+            movie.release_date = new_release_date
+            movie.update()
+    '''
+    def update(self):
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release_date': "{:%m/%d/%Y}".format(self.release_date)
+        }
+
+    def __repr__(self):
+        return f'<Movie {self.id} {self.title}>'
