@@ -96,6 +96,8 @@ def create_app(test_config=None):
             - 'name': A string that is the full name of the actor.
             - 'age': An Integer that is the age of the actor.
             - 'gender': A string that is the gender of the actor.
+            - 'movies': A list of movie ids that are the movies this actor is
+                in.
         - Returns:
           - Status code 200 and json {"success": True, "actors": [actor]} where
               actors is an array containing only the newly created actor
@@ -109,10 +111,21 @@ def create_app(test_config=None):
         name = request.get_json().get('name', None)
         age = request.get_json().get('age', 0)
         gender = request.get_json().get('gender', None)
+        movie_ids = request.get_json().get('movies', [])
 
         # Verify that the appropriate parameters were passed.
         if (not name or not age or not gender):
             abort(400)
+
+        # Verify that the associated movies exist.
+        for movie_id in movie_ids:
+            movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+            if not movie:
+                abort(404)
+        # Movies exist, associate actors with movies.
+        movies_to_associate = Movie.query.filter(
+            Movie.id.in_(movie_ids)
+        ).all()
 
         try:
             new_actor = Actor(
@@ -120,6 +133,7 @@ def create_app(test_config=None):
                 age=age,
                 gender=gender
             )
+            new_actor.movies = movies_to_associate
             new_actor.insert()
             # We can get the id of the new_actor because it has been flushed.
             return jsonify({

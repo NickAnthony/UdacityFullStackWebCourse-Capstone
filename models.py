@@ -49,12 +49,7 @@ class Actor(db.Model):
         self.gender = gender
 
     def format(self):
-        formatted_movies = []
-        for movie in self.movies:
-            formatted_movies.append({
-                "id": movie.id,
-                "title": movie.title
-            })
+        formatted_movies = [movie.id for movie in self.movies]
         return {
             'id': self.id,
             'name': self.name,
@@ -159,12 +154,7 @@ class Movie(db.Model):
         db.session.commit()
 
     def format(self):
-        formatted_actors = []
-        for actor in self.actors:
-            formatted_actors.append({
-                "id": actor.id,
-                "name": actor.name
-            })
+        formatted_actors = [actor.id for actor in self.actors]
         return {
             'id': self.id,
             'title': self.title,

@@ -113,6 +113,50 @@ class CastingAgencyTestCase(unittest.TestCase):
         res = self.client().delete('/actors/%d' % new_actor_id)
         self.assertEqual(res.status_code, 200)
 
+    def test_create_actor_with_movie_succeeds(self):
+        # Get existing movies
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        movie_id = data['movies'][0]['id']
+
+        # Add new actor and associate it with movie
+        res = self.client().post('/actors', json={
+            'name': self.new_actor['name'],
+            'age': self.new_actor['age'],
+            'gender': self.new_actor['gender'],
+            'movies': [movie_id]
+        })
+        data = json.loads(res.data)
+        new_actor_id = data['actors'][0]['id']
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['actors'][0]['name'], self.new_actor['name'])
+        self.assertEqual(data['actors'][0]['age'], self.new_actor['age'])
+        self.assertEqual(data['actors'][0]['gender'], self.new_actor['gender'])
+        self.assertEqual(data['actors'][0]['movies'], [movie_id])
+
+        # Assert the new actor was inserted
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        actor_exists = False
+        for actor in data['actors']:
+            if actor['id'] == new_actor_id:
+                actor_exists = True
+        self.assertTrue(actor_exists)
+
+        # Assert the movie was also associated with the actor.
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        for movie in data['movies']:
+            if movie['id'] == movie_id:
+                self.assertTrue(movie['actors'][0], new_actor_id)
+
+        # Clean up DB after creating new actor
+        res = self.client().delete('/actors/%d' % new_actor_id)
+        self.assertEqual(res.status_code, 200)
+
     def test_create_actor_throw_400_for_missing_name(self):
         res = self.client().post('/actors', json={
             'age': self.new_actor['age'],
@@ -183,6 +227,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         })
         data = json.loads(res.data)
         new_actor_id = data['actors'][0]['id']
+
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
