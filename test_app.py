@@ -162,6 +162,19 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Bad request')
 
+    def test_create_actor_throws_404_for_bad_movie_id(self):
+        res = self.client().post('/actors', json={
+            'name': self.new_actor['name'],
+            'age': self.new_actor['age'],
+            'gender': self.new_actor['gender'],
+            'movies': [100000]
+        })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Resource was not found')
+
     # ------------------------------------------------------------
     # Testing '/actors/${actor_id}' DELETE endpoint
     # ------------------------------------------------------------
@@ -203,7 +216,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertFalse(actor_exists)
 
     def test_delete_actor_throws_404_for_bad_actor_id(self):
-        res = self.client().delete('/actors/1000')
+        res = self.client().delete('/actors/100000')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -253,7 +266,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_patch_actors_throw_404_for_bad_actor_id(self):
-        res = self.client().patch('/actors/1000', json={
+        res = self.client().patch('/actors/100000', json={
             'name': self.new_actor['name'],
             'age': self.new_actor['age'],
             'gender': self.new_actor['gender']
@@ -364,6 +377,18 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Bad request')
 
+    def test_create_movie_throws_404_for_bad_actor_id(self):
+        res = self.client().post('/movies', json={
+            'title': self.new_movie['title'],
+            'release_date': self.new_movie['release_date'],
+            'actors': [100000]
+        })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Resource was not found')
+
     # ------------------------------------------------------------
     # Testing '/movies/${movie_id}' DELETE endpoint
     # ------------------------------------------------------------
@@ -404,7 +429,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertFalse(movie_exists)
 
     def test_delete_movie_throws_404_for_bad_movie_id(self):
-        res = self.client().delete('/actors/1000')
+        res = self.client().delete('/actors/100000')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -450,7 +475,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_patch_movies_throw_404_for_bad_movie_id(self):
-        res = self.client().patch('/movies/1000', json={
+        res = self.client().patch('/movies/100000', json={
             'title': self.new_movie['title'],
             'release_date': self.new_movie['release_date']
         })
