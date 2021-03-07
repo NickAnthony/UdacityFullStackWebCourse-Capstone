@@ -129,12 +129,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         })
         data = json.loads(res.data)
         new_actor_id = data['actors'][0]['id']
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(data['actors'][0]['name'], self.new_actor['name'])
-        self.assertEqual(data['actors'][0]['age'], self.new_actor['age'])
-        self.assertEqual(data['actors'][0]['gender'], self.new_actor['gender'])
-        self.assertEqual(data['actors'][0]['movies'], [movie_id])
 
         # Assert the new actor was inserted
         res = self.client().get('/actors')
@@ -309,6 +303,41 @@ class CastingAgencyTestCase(unittest.TestCase):
             if movie['id'] == new_movie_id:
                 movie_exists = True
         self.assertTrue(movie_exists)
+
+        # Clean up DB after creating new movie
+        res = self.client().delete('/movies/%d' % new_movie_id)
+        self.assertEqual(res.status_code, 200)
+
+    def test_create_movie_with_actors_succeeds(self):
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        actor_id = data['actors'][0]['id']
+
+        res = self.client().post('/movies', json={
+            'title': self.new_movie['title'],
+            'release_date': self.new_movie['release_date'],
+            'actors': [actor_id]
+        })
+        data = json.loads(res.data)
+        new_movie_id = data['movies'][0]['id']
+
+        # Assert the new movie was inserted
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_exists = False
+        for movie in data['movies']:
+            if movie['id'] == new_movie_id:
+                movie_exists = True
+        self.assertTrue(movie_exists)
+
+        # Assert the actor was also associated with the movie.
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        for actor in data['actors']:
+            if actor['id'] == actor_id:
+                self.assertTrue(actor['movies'][0], new_movie_id)
 
         # Clean up DB after creating new movie
         res = self.client().delete('/movies/%d' % new_movie_id)

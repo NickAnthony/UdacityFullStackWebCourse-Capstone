@@ -258,6 +258,7 @@ def create_app(test_config=None):
             abort(400)
         title = request.get_json().get('title', None)
         release_date_str = request.get_json().get('release_date', None)
+        actor_ids = request.get_json().get('actors', [])
 
         # Verify that the appropriate parameters were passed.
         if (not title or not release_date_str):
@@ -270,11 +271,22 @@ def create_app(test_config=None):
         except ValueError as e:
             abort(400)
 
+        # Verify that the associated actors exist.
+        for actor_id in actor_ids:
+            actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+            if not actor:
+                abort(404)
+        # Actors exist, associate this movie with the appropriate actors.
+        actors_to_associate = Actor.query.filter(
+            Actor.id.in_(actor_ids)
+        ).all()
+
         try:
             new_movie = Movie(
                 title=title,
                 release_date=release_date
             )
+            new_movie.actors = actors_to_associate
             new_movie.insert()
             # We can get the id of the new_movie because it has been flushed.
             return jsonify({
