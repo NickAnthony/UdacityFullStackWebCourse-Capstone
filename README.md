@@ -175,3 +175,10 @@ If the testing db was already created:
     - @TODO: Implement
 - At least two tests of RBAC for each role
     - @TODO: Implement
+
+### Python Code Style
+
+All python files have been checked with `pycodestyle`.
+Using the following to double check code style:
+
+`pycodestyle <filename.py>`

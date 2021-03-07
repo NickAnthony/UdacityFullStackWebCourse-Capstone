@@ -1,7 +1,9 @@
-import datetime, os
+import datetime
+import os
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 from models import setup_db, Actor, Movie
+
 
 def create_app(test_config=None):
 
@@ -12,8 +14,10 @@ def create_app(test_config=None):
     # CORS Headers
     @app.after_request
     def after_request(response):
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers',
+                             'Content-Type,Authorization,true')
+        response.headers.add('Access-Control-Allow-Methods',
+                             'GET,PATCH,POST,DELETE,OPTIONS')
         return response
 
     @app.route('/')
@@ -22,26 +26,27 @@ def create_app(test_config=None):
         if not excited:
             excited = 'true'
         greeting = "Hello"
-        if excited == 'true': greeting = greeting + "!!!!!"
+        if excited == 'true':
+            greeting = greeting + "!!!!!"
         return greeting
 
     @app.route('/coolkids')
     def be_cool():
         return "Be cool, man, be coooool! You're almost a FSND grad!"
 
-    #----------------------------------------------------------------------------#
+    # ----------------------------------------------------------------------- #
     # Actor endpoints/routes.
-    #----------------------------------------------------------------------------#
+    # ----------------------------------------------------------------------- #
     def format_actors(actors):
         return [actor.format() for actor in actors]
 
     def format_movies(movies):
         return [movie.format() for movie in movies]
 
-    #----------------------------------------------------------------------------#
+    # ----------------------------------------------------------------------- #
     # Actor endpoints/routes.
-    #----------------------------------------------------------------------------#
-    '''
+    # ----------------------------------------------------------------------- #
+    """
     GET /actors
         - A Public Endpoint that fetches a list of all actors. If there are
             no actors, it will return an empty list.
@@ -50,7 +55,7 @@ def create_app(test_config=None):
         - Returns:
           - Status code 200 and json {"success": True, "actors": actors}
             where actors is a list of all actors.
-    '''
+    """
     @app.route('/actors', methods=['GET'])
     def get_actors():
         actors = Actor.query.all()
@@ -59,7 +64,7 @@ def create_app(test_config=None):
                 'actors': format_actors(actors)
             })
 
-    '''
+    """
     DELETE /actors
         - A Public Endpoint that deletes an existing actor from the database.
           Returns a 404 if the actor <id> is not found.
@@ -70,7 +75,7 @@ def create_app(test_config=None):
           - Status code 200 and json {"success": True, "delete": id} where id
               is the id of the deleted record or appropriate status code
               indicating reason for failure.
-    '''
+    """
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
     def delete_actor(actor_id):
         actor_to_delete = Actor.query.get(actor_id)
@@ -86,7 +91,7 @@ def create_app(test_config=None):
         except Exception as e:
             abort(422)
 
-    '''
+    """
     POST /actors
         - Creates a new actors and stores it in the database.  It will throw
             a 400 if the incorrect parameters are passed.
@@ -103,7 +108,7 @@ def create_app(test_config=None):
               actors is an array containing only the newly created actor
               or appropriate status code indicating reason for failure
     @TODO: Implement ability to associate an actor with a movie.
-    '''
+    """
     @app.route('/actors', methods=['POST'])
     def add_new_actor():
         if not request.get_json():
@@ -144,7 +149,7 @@ def create_app(test_config=None):
         except Exception as e:
             abort(422)
 
-    '''
+    """
     PATCH /actors/<id>
         - Updates an existing actor.  It will throw a 404 if <id> is not found.
         - Permissions required:
@@ -161,7 +166,7 @@ def create_app(test_config=None):
               actors is an array containing only the updated actor
               or appropriate status code indicating reason for failure.
     @TODO: Implement ability to update the movies an actor is in.
-    '''
+    """
     @app.route('/actors/<int:actor_id>', methods=['PATCH'])
     def modify_exiting_actor(actor_id):
         actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
@@ -197,10 +202,10 @@ def create_app(test_config=None):
         except Exception as e:
             abort(422)
 
-    #----------------------------------------------------------------------------#
+    # ----------------------------------------------------------------------- #
     # Movie endpoints/routes.
-    #----------------------------------------------------------------------------#
-    '''
+    # ----------------------------------------------------------------------- #
+    """
     GET /movies
         - A Public Endpoint that fetches a list of all movies. If there are
             no movies, it will return an empty list.
@@ -209,7 +214,7 @@ def create_app(test_config=None):
         - Returns:
           - Status code 200 and json {"success": True, "movies": movies}
             where movies is a list of all movies.
-    '''
+    """
     @app.route('/movies', methods=['GET'])
     def get_movies():
         movies = Movie.query.all()
@@ -218,7 +223,7 @@ def create_app(test_config=None):
                 'movies': format_movies(movies)
             })
 
-    '''
+    """
     DELETE /movies
         - A Public Endpoint that deletes an existing movie from the database.
           Returns a 404 if the movie <id> is not found.
@@ -229,7 +234,7 @@ def create_app(test_config=None):
           - Status code 200 and json {"success": True, "delete": id} where id
               is the id of the deleted record or appropriate status code
               indicating reason for failure.
-    '''
+    """
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
     def delete_movie(movie_id):
         movie_to_delete = Movie.query.get(movie_id)
@@ -245,7 +250,7 @@ def create_app(test_config=None):
         except Exception as e:
             abort(422)
 
-    '''
+    """
     POST /movies
         - Creates a new movies and stores it in the database.  It will throw
             a 400 if the incorrect parameters are passed.
@@ -260,7 +265,7 @@ def create_app(test_config=None):
               movies is an array containing only the newly created movie
               or appropriate status code indicating reason for failure
     @TODO: Implement ability to associate actors with this movie.
-    '''
+    """
     @app.route('/movies', methods=['POST'])
     def add_new_movie():
         if not request.get_json():
@@ -306,15 +311,15 @@ def create_app(test_config=None):
         except Exception as e:
             abort(422)
 
-    '''
+    """
     PATCH /movies/<id>
         - Updates an existing movie.  It will throw a 404 if <id> is not found.
         - Permissions required:
             - 'patch:movies'
         - Request Arguments:
             - [Optional] 'title': A string that is the full title of the movie.
-            - [Optional] 'release_date': A string of the release date of the movie, in the
-               format "YYYY-MM-DD"
+            - [Optional] 'release_date': A string of the release date of the
+                movie, in the format "YYYY-MM-DD"
             - [Optional] 'actors': A list of actor id ints that represent the
                 actors in the movie.
             - The movie information will not change if none of the request
@@ -324,7 +329,7 @@ def create_app(test_config=None):
               movies is an array containing only the updated movie
               or appropriate status code indicating reason for failure.
     @TODO: Implement ability to modify the actors in this movie.
-    '''
+    """
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
     def modify_exiting_movie(movie_id):
         movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
@@ -366,11 +371,9 @@ def create_app(test_config=None):
         except Exception as e:
             abort(422)
 
-    '''
-    @DONE:
-    Create error handlers for all expected errors
-    including 404 and 422.
-    '''
+    # ----------------------------------------------------------------------- #
+    # Error handlers for all expected errors.
+    # ----------------------------------------------------------------------- #
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
@@ -412,6 +415,7 @@ def create_app(test_config=None):
         }), 500
 
     return app
+
 
 app = create_app()
 

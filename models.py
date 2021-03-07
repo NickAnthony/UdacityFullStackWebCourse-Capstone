@@ -1,7 +1,8 @@
 from sqlalchemy import Column, String, Integer, Date, ForeignKey, create_engine
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-import json, os
+import json
+import os
 
 database_path = os.environ.get('DATABASE_URL')
 if not database_path:
@@ -9,11 +10,12 @@ if not database_path:
 
 db = SQLAlchemy()
 
-'''
-setup_db(app)
-    binds a flask application and a SQLAlchemy service
-'''
+
 def setup_db(app, database_path=database_path):
+    """setup_db(app)
+
+    Binds a flask application and a SQLAlchemy service
+    """
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
@@ -21,18 +23,22 @@ def setup_db(app, database_path=database_path):
     db.create_all()
     migrate = Migrate(app, db)
 
-'''
+
+"""
 Association table between movies and actors
-'''
-movie_actor_association = db.Table('order_items',
+"""
+movie_actor_association = db.Table(
+    'order_items',
     Column('actor_id', Integer, ForeignKey('actors.id'), primary_key=True),
     Column('movie_id', Integer, ForeignKey('movies.id'), primary_key=True)
 )
-'''
-Actor
-Represents an actor with attributes name, age, and gender.
-'''
+
+
 class Actor(db.Model):
+    """Actor
+
+    Represents an actor with attributes name, age, and gender.
+    """
     __tablename__ = 'actors'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -58,50 +64,48 @@ class Actor(db.Model):
             'movies': formatted_movies
         }
 
-    '''
-    insert()
-        inserts a new model into the database
-        the model must have a unique id or null id
-        EXAMPLE
+    def insert(self):
+        """Inserts a new model into the database
+
+        The model must have a unique id or null id
+        EXAMPLE:
             actor = Actor(name=req_name, age=req_age, gender=req_gender)
             actor.insert()
-    '''
-    def insert(self):
+        """
         db.session.add(self)
         db.session.commit()
 
-    '''
-    delete()
-        deletes an existing model from the database
-        the model must exist in the database
+    def delete(self):
+        """Deletes an existing model from the database
+
+        The model must exist in the database
         EXAMPLE
             actor = Actor(name=req_name, age=req_age, gender=req_gender)
             actor.delete()
-    '''
-    def delete(self):
+        """
         db.session.delete(self)
         db.session.commit()
 
-    '''
-    update()
-        updates an existing model in the database
+    def update(self):
+        """Updates an existing model in the database
+
         the model must exist in the database
         EXAMPLE
             actor = Actor.query.filter(Actor.id == id).one_or_none()
             actor.age = 28
             actor.update()
-    '''
-    def update(self):
+        """
         db.session.commit()
 
     def __repr__(self):
         return f'<Actor {self.id} {self.name}>'
 
-'''
-Movie
-Represents a movie with attributes title and release date.
-'''
+
 class Movie(db.Model):
+    """Movie
+
+    Represents a movie with attributes title and release date.
+    """
     __tablename__ = 'movies'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -114,43 +118,43 @@ class Movie(db.Model):
         self.title = title
         self.release_date = release_date
 
-    '''
-    insert()
-        inserts a new model into the database
-        the model must have a unique id or null id
+    def insert(self):
+        """Inserts a new model into the database
+
+        The model must have a unique id or null id
         EXAMPLE
-            req_release_date = datetime.datetime.strptime("2022-01-15", "%Y-%m-%d").date()
+            req_release_date = datetime.datetime.strptime("2022-01-15",
+                "%Y-%m-%d").date()
             movie = Movie(title=req_title, release_date=req_release_date)
             movie.insert()
-    '''
-    def insert(self):
+        """
         db.session.add(self)
         db.session.commit()
 
-    '''
-    delete()
-        deletes an existing model from the database
-        the model must exist in the database
+    def delete(self):
+        """Deletes an existing model from the database
+
+        The model must exist in the database
         EXAMPLE
-            req_release_date = datetime.datetime.strptime("2022-01-15", "%Y-%m-%d").date()
+            req_release_date = datetime.datetime.strptime("2022-01-15",
+                "%Y-%m-%d").date()
             movie = Movie(title=req_title, release_date=req_release_date)
             movie.delete()
-    '''
-    def delete(self):
+        """
         db.session.delete(self)
         db.session.commit()
 
-    '''
-    update()
-        updates an existing model in the database
-        the model must exist in the database
+    def update(self):
+        """Updates an existing model in the database
+
+        The model must exist in the database
         EXAMPLE
             movie = Movie.query.filter(Movie.id == id).one_or_none()
-            new_release_date = datetime.datetime.strptime("2022-01-15", "%Y-%m-%d").date()
+            new_release_date = datetime.datetime.strptime("2022-01-15",
+                "%Y-%m-%d").date()
             movie.release_date = new_release_date
             movie.update()
-    '''
-    def update(self):
+        """
         db.session.commit()
 
     def format(self):
