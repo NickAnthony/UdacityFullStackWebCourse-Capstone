@@ -265,6 +265,37 @@ class CastingAgencyTestCase(unittest.TestCase):
         res = self.client().delete('/actors/%d' % new_actor_id)
         self.assertEqual(res.status_code, 200)
 
+    def test_patch_actor_with_movie_succeeds(self):
+        res = self.client().post('/actors', json={
+            'name': self.new_actor['name'],
+            'age': self.new_actor['age'],
+            'gender': self.new_actor['gender']
+        })
+        data = json.loads(res.data)
+        new_actor_id = data['actors'][0]['id']
+        # Get an existing movie.
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_id = data['movies'][0]['id']
+        # Patch the new actor just inserted.
+        res = self.client().patch('/actors/%d' % new_actor_id, json={
+            'movies': [movie_id],
+        })
+        data = json.loads(res.data)
+        # Assert the new actor was patched.
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        actor_exists = False
+        for actor in data['actors']:
+            if actor['id'] == new_actor_id:
+                actor_exists = True
+                self.assertEqual(actor['movies'], [movie_id])
+
+        self.assertTrue(actor_exists)
+        # Clean up DB after creating new actor
+        res = self.client().delete('/actors/%d' % new_actor_id)
+        self.assertEqual(res.status_code, 200)
+
     def test_patch_actors_throw_404_for_bad_actor_id(self):
         res = self.client().patch('/actors/100000', json={
             'name': self.new_actor['name'],
@@ -470,6 +501,31 @@ class CastingAgencyTestCase(unittest.TestCase):
                 self.assertEqual(movie['release_date'], '2024-02-04')
         self.assertTrue(movie_exists)
 
+    def test_patch_movie_with_new_actor_succeeds(self):
+        # Create a new movie with no actors.
+        res = self.client().post('/movies', json={
+            'title': self.new_movie['title'],
+            'release_date': self.new_movie['release_date']
+        })
+        data = json.loads(res.data)
+        new_movie_id = data['movies'][0]['id']
+        # Get an existing actor.
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        actor_id = data['actors'][0]['id']
+        # Patch the new movie just inserted with an actor.
+        self.client().patch('/movies/%d' % new_movie_id, json={
+            'actors': [actor_id]
+        })
+        # Assert the new movie was patched correctly.
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_exists = False
+        for movie in data['movies']:
+            if movie['id'] == new_movie_id:
+                movie_exists = True
+                self.assertEqual(movie['actors'], [actor_id])
+        self.assertTrue(movie_exists)
         # Clean up DB after creating new movie
         res = self.client().delete('/movies/%d' % new_movie_id)
         self.assertEqual(res.status_code, 200)

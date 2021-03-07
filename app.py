@@ -153,6 +153,7 @@ def create_app(test_config=None):
             - [Optional] 'name': A string that is the full name of the actor.
             - [Optional] 'age': An Integer that is the age of the actor.
             - [Optional] 'gender': A string that is the gender of the actor.
+            - [Optional] 'movies': A list of movie ids that the actor is in.
             - The actor information will not change if none of the request
                 arguments are supplied.  However, a 200 will still be returned.
         - Returns:
@@ -170,6 +171,13 @@ def create_app(test_config=None):
         name = request.get_json().get('name', actor.name)
         age = request.get_json().get('age', actor.age)
         gender = request.get_json().get('gender', actor.gender)
+        movie_ids = request.get_json().get('movies', [])
+        if movie_ids:
+            movies = Movie.query.filter(Movie.id.in_(movie_ids)).all()
+            if len(movies) < len(movie_ids):
+                abort(404)
+        else:
+            movies = actor.movies
 
         # Verify that an inappropriate value was not passed.
         if (not name or not age or not gender):
@@ -179,6 +187,7 @@ def create_app(test_config=None):
             actor.name = name
             actor.age = age
             actor.gender = gender
+            actor.movies = movies
             actor.update()
             return jsonify({
                 'success': True,
@@ -306,6 +315,8 @@ def create_app(test_config=None):
             - [Optional] 'title': A string that is the full title of the movie.
             - [Optional] 'release_date': A string of the release date of the movie, in the
                format "YYYY-MM-DD"
+            - [Optional] 'actors': A list of actor id ints that represent the
+                actors in the movie.
             - The movie information will not change if none of the request
                 arguments are supplied.  However, a 200 will still be returned.
         - Returns:
@@ -319,28 +330,33 @@ def create_app(test_config=None):
         movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
         if not movie:
             abort(404)
-
+        # Get the provided new value or default to the existing values.
         req_json = request.get_json()
-        title = req_json.get('title', None)
+        title = req_json.get('title', movie.title)
         release_date_str = req_json.get(
             'release_date',
             "{:%Y-%m-%d}".format(movie.release_date)
         )
-
+        actor_ids = req_json.get('actors', None)
+        if actor_ids:
+            actors = Actor.query.filter(Actor.id.in_(actor_ids)).all()
+            if len(actors) < len(actor_ids):
+                abort(404)
+        else:
+            actors = movie.actors
         # Verify that the appropriate parameters were passed.
         if (not title or not release_date_str):
             abort(400)
-
         # Verify that the date is in a valid format and a valid date.
         try:
             release_date = datetime.datetime.strptime(release_date_str,
                                                       "%Y-%m-%d").date()
         except ValueError as e:
             abort(400)
-
         try:
             movie.title = title
             movie.release_date = release_date
+            movie.actors = actors
             movie.update()
             return jsonify({
                 'success': True,
