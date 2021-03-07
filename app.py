@@ -294,11 +294,11 @@ def create_app(test_config=None):
         if not movie:
             abort(404)
 
-        req_json = equest.get_json()
+        req_json = request.get_json()
         title = req_json.get('title', None)
         release_date_str = req_json.get(
             'release_date',
-            "{:%Y-%m-%d}".format(self.release_date)
+            "{:%Y-%m-%d}".format(movie.release_date)
         )
 
         # Verify that the appropriate parameters were passed.

@@ -124,6 +124,7 @@ class Movie(db.Model):
         inserts a new model into the database
         the model must have a unique id or null id
         EXAMPLE
+            req_release_date = datetime.datetime.strptime("2022-01-15", "%Y-%m-%d").date()
             movie = Movie(title=req_title, release_date=req_release_date)
             movie.insert()
     '''
@@ -136,6 +137,7 @@ class Movie(db.Model):
         deletes an existing model from the database
         the model must exist in the database
         EXAMPLE
+            req_release_date = datetime.datetime.strptime("2022-01-15", "%Y-%m-%d").date()
             movie = Movie(title=req_title, release_date=req_release_date)
             movie.delete()
     '''

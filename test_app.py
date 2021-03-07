@@ -34,8 +34,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.new_movie = {
             "title": "Ocean's Eleven",
-            "release_date": datetime.datetime.strptime("2001-12-07",
-                                                       "%Y-%m-%d").date()
+            "release_date": "2001-12-07"
         }
         # Prepopulate the database
         new_actress = Actor(
@@ -70,7 +69,6 @@ class CastingAgencyTestCase(unittest.TestCase):
     # ------------------------------------------------------------
     # Testing '/actors' GET endpoint
     # ------------------------------------------------------------
-
     def test_basic_get_actors_succeeds(self):
         res = self.client().get('/actors')
         data = json.loads(res.data)
@@ -88,7 +86,6 @@ class CastingAgencyTestCase(unittest.TestCase):
     # ------------------------------------------------------------
     # Testing '/actors' POST endpoint
     # ------------------------------------------------------------
-
     def test_create_actor_succeeds(self):
         res = self.client().post('/actors', json={
             'name': self.new_actor['name'],
@@ -130,7 +127,6 @@ class CastingAgencyTestCase(unittest.TestCase):
     # ------------------------------------------------------------
     # Testing '/actors/${actor_id}' DELETE endpoint
     # ------------------------------------------------------------
-
     def test_delete_actor_succeeds(self):
         # Create actor to delete
         res = self.client().post('/actors', json={
@@ -179,7 +175,6 @@ class CastingAgencyTestCase(unittest.TestCase):
     # ------------------------------------------------------------
     # Testing '/actors' PATCH endpoint
     # ------------------------------------------------------------
-
     def test_patch_actor_succeeds(self):
         res = self.client().post('/actors', json={
             'name': self.new_actor['name'],
@@ -223,6 +218,167 @@ class CastingAgencyTestCase(unittest.TestCase):
             'name': self.new_actor['name'],
             'age': self.new_actor['age'],
             'gender': self.new_actor['gender']
+        })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Resource was not found')
+
+    # ------------------------------------------------------------
+    # Testing '/movies' GET endpoint
+    # ------------------------------------------------------------
+    def test_basic_get_movies_succeeds(self):
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['movies'])
+        self.assertEqual(len(data['movies']), 1)
+
+        self.assertTrue(data['movies'][0]['title'])
+        self.assertTrue(data['movies'][0]['release_date'])
+
+    # ------------------------------------------------------------
+    # Testing '/movies' POST endpoint
+    # ------------------------------------------------------------
+    def test_create_movie_succeeds(self):
+        res = self.client().post('/movies', json={
+            'title': self.new_movie['title'],
+            'release_date': self.new_movie['release_date']
+        })
+        data = json.loads(res.data)
+        new_movie_id = data['movies'][0]['id']
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['movies'][0]['title'], self.new_movie['title'])
+        self.assertEqual(data['movies'][0]['release_date'],
+                         self.new_movie['release_date'])
+
+        # Assert the new movie was inserted
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_exists = False
+        for movie in data['movies']:
+            if movie['id'] == new_movie_id:
+                movie_exists = True
+        self.assertTrue(movie_exists)
+
+        # Clean up DB after creating new movie
+        res = self.client().delete('/movies/%d' % new_movie_id)
+        self.assertEqual(res.status_code, 200)
+
+    def test_create_movie_throws_400_for_missing_title(self):
+        res = self.client().post('/movies', json={
+            'release_date': self.new_movie['release_date']
+        })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Bad request')
+
+    def test_create_movie_throws_400_for_incorrectly_formated_date(self):
+        res = self.client().post('/movies', json={
+            'title': self.new_movie['title'],
+            'release_date': "1965-35-35"
+        })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Bad request')
+
+    # ------------------------------------------------------------
+    # Testing '/movies/${movie_id}' DELETE endpoint
+    # ------------------------------------------------------------
+    def test_delete_movie_succeeds(self):
+        # Create movie to delete
+        res = self.client().post('/movies', json={
+            'title': self.new_movie['title'],
+            'release_date': self.new_movie['release_date']
+        })
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        new_movie_id = data['movies'][0]['id']
+
+        # Check movie exists before deletion
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_exists = False
+        for movie in data['movies']:
+            if movie['id'] == new_movie_id:
+                movie_exists = True
+        self.assertTrue(movie_exists)
+
+        # Delete our new movie with id new_movie_id
+        res = self.client().delete('/movies/%d' % new_movie_id)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['delete'], new_movie_id)
+
+        # Check question does NOT exists after deletion
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_exists = False
+        for movie in data['movies']:
+            if movie['id'] == new_movie_id:
+                movie_exists = True
+        self.assertFalse(movie_exists)
+
+    def test_delete_movie_throws_404_for_bad_movie_id(self):
+        res = self.client().delete('/actors/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Resource was not found')
+
+    # ------------------------------------------------------------
+    # Testing '/movies' PATCH endpoint
+    # ------------------------------------------------------------
+    def test_patch_movie_succeeds(self):
+        res = self.client().post('/movies', json={
+            'title': self.new_movie['title'],
+            'release_date': self.new_movie['release_date']
+        })
+        data = json.loads(res.data)
+        new_movie_id = data['movies'][0]['id']
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+        # Patch the new movie just inserted.
+        res = self.client().patch('/movies/%d' % new_movie_id, json={
+            'title': self.new_movie['title'],
+            'release_date': '2024-02-04'
+        })
+        data = json.loads(res.data)
+        new_movie_id = data['movies'][0]['id']
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+        # Assert the new movie was patched.
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_exists = False
+        for movie in data['movies']:
+            if movie['id'] == new_movie_id:
+                movie_exists = True
+                self.assertEqual(movie['title'], self.new_movie['title'])
+                self.assertEqual(movie['release_date'], '2024-02-04')
+        self.assertTrue(movie_exists)
+
+        # Clean up DB after creating new movie
+        res = self.client().delete('/movies/%d' % new_movie_id)
+        self.assertEqual(res.status_code, 200)
+
+    def test_patch_movies_throw_404_for_bad_movie_id(self):
+        res = self.client().patch('/movies/1000', json={
+            'title': self.new_movie['title'],
+            'release_date': self.new_movie['release_date']
         })
         data = json.loads(res.data)
 
