@@ -2,6 +2,7 @@ import os
 import unittest
 import json
 import datetime
+from flask import abort, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
@@ -52,6 +53,12 @@ class CastingAgencyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Executed after reach test"""
+        all_actors = Actor.query.all()
+        for actor in all_actors:
+            actor.delete()
+        all_movies = Movie.query.all()
+        for movie in all_movies:
+            movie.delete()
         pass
 
     """
@@ -89,7 +96,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             'gender': self.new_actor['gender']
         })
         data = json.loads(res.data)
-        new_actor_id = data['id']
+        new_actor_id = data['actors'][0]['id']
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['actors'][0]['name'], self.new_actor['name'])
@@ -106,7 +113,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(actor_exists)
 
         # Clean up DB after creating new actor
-        res = self.client().delete('/actor/%d' % new_actor_id)
+        res = self.client().delete('/actors/%d' % new_actor_id)
         self.assertEqual(res.status_code, 200)
 
     def test_create_actor_throw_400_for_missing_name(self):
@@ -134,7 +141,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        new_actor_id = data['id']
+        new_actor_id = data['actors'][0]['id']
 
         # Check actor exists before deletion
         res = self.client().get('/actors')
@@ -150,7 +157,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['id'], new_actor_id)
+        self.assertEqual(data['delete'], new_actor_id)
 
         # Check question does NOT exists after deletion
         res = self.client().get('/actors')
@@ -180,7 +187,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             'gender': self.new_actor['gender']
         })
         data = json.loads(res.data)
-        new_actor_id = data['id']
+        new_actor_id = data['actors'][0]['id']
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
@@ -191,7 +198,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             'gender': "Female"
         })
         data = json.loads(res.data)
-        new_actor_id = data['id']
+        new_actor_id = data['actors'][0]['id']
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
@@ -208,11 +215,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(actor_exists)
 
         # Clean up DB after creating new actor
-        res = self.client().delete('/actor/%d' % new_actor_id)
+        res = self.client().delete('/actors/%d' % new_actor_id)
         self.assertEqual(res.status_code, 200)
 
     def test_patch_actors_throw_404_for_bad_actor_id(self):
-        res = self.client().path('/actors/1000', json={
+        res = self.client().patch('/actors/1000', json={
             'name': self.new_actor['name'],
             'age': self.new_actor['age'],
             'gender': self.new_actor['gender']

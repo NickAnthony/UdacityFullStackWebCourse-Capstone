@@ -155,7 +155,19 @@ The Casting Agency models a company that is responsible for creating movies and 
     - Add or delete a movie from the database
     - @TODO: Implement
 
-## Tests
+## Testing
+
+### Set up
+
+`createdb casting_agency_test`
+
+If the testing db was already created:
+
+`dropdb casting_agency_test && createdb casting_agency_test`
+
+### Run the tests
+
+`python test_app.py`
 
 - One test for success behavior of each endpoint
     - @TODO: Implement

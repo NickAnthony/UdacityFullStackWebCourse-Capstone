@@ -1,7 +1,7 @@
 import datetime, os
-from flask import Flask
+from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
-from models import setup_db
+from models import setup_db, Actor, Movie
 
 def create_app(test_config=None):
 
@@ -103,7 +103,7 @@ def create_app(test_config=None):
     @TODO: Implement ability to associate an actor with a movie.
     '''
     @app.route('/actors', methods=['POST'])
-    def add_new_actor(payload):
+    def add_new_actor():
         if not request.get_json():
             abort(400)
         name = request.get_json().get('name', None)
@@ -239,7 +239,7 @@ def create_app(test_config=None):
     @TODO: Implement ability to associate actors with this movie.
     '''
     @app.route('/movies', methods=['POST'])
-    def add_new_movie(payload):
+    def add_new_movie():
         if not request.get_json():
             abort(400)
         title = request.get_json().get('title', None)
@@ -324,6 +324,50 @@ def create_app(test_config=None):
         except Exception as e:
             abort(422)
 
+    '''
+    @DONE:
+    Create error handlers for all expected errors
+    including 404 and 422.
+    '''
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "Bad request"
+        }), 400
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "Resource was not found"
+        }), 404
+
+    @app.errorhandler(405)
+    def not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 405,
+            "message": "Method is not allowed"
+        }), 405
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "Unprocessable"
+        }), 422
+
+    @app.errorhandler(500)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Internal server error"
+        }), 500
 
     return app
 
