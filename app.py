@@ -1,5 +1,6 @@
 import datetime
 import os
+from auth import AuthError, requires_auth
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 from models import setup_db, Actor, Movie
@@ -77,7 +78,8 @@ def create_app(test_config=None):
               indicating reason for failure.
     """
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
-    def delete_actor(actor_id):
+    @requires_auth('delete:actors')
+    def delete_actor(payload, actor_id):
         actor_to_delete = Actor.query.get(actor_id)
         if not actor_to_delete:
             abort(404)
@@ -110,7 +112,8 @@ def create_app(test_config=None):
     @TODO: Implement ability to associate an actor with a movie.
     """
     @app.route('/actors', methods=['POST'])
-    def add_new_actor():
+    @requires_auth('post:actors')
+    def add_new_actor(payload):
         if not request.get_json():
             abort(400)
         name = request.get_json().get('name', None)
@@ -165,10 +168,10 @@ def create_app(test_config=None):
           - Status code 200 and json {"success": True, "actors": [actor]} where
               actors is an array containing only the updated actor
               or appropriate status code indicating reason for failure.
-    @TODO: Implement ability to update the movies an actor is in.
     """
     @app.route('/actors/<int:actor_id>', methods=['PATCH'])
-    def modify_exiting_actor(actor_id):
+    @requires_auth('patch:actors')
+    def modify_exiting_actor(payload, actor_id):
         actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
         if not actor:
             abort(404)
@@ -236,7 +239,8 @@ def create_app(test_config=None):
               indicating reason for failure.
     """
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
-    def delete_movie(movie_id):
+    @requires_auth('delete:movies')
+    def delete_movie(payload, movie_id):
         movie_to_delete = Movie.query.get(movie_id)
         if not movie_to_delete:
             abort(404)
@@ -267,7 +271,8 @@ def create_app(test_config=None):
     @TODO: Implement ability to associate actors with this movie.
     """
     @app.route('/movies', methods=['POST'])
-    def add_new_movie():
+    @requires_auth('post:movies')
+    def add_new_movie(payload):
         if not request.get_json():
             abort(400)
         title = request.get_json().get('title', None)
@@ -328,10 +333,10 @@ def create_app(test_config=None):
           - Status code 200 and json {"success": True, "movies": [movie]} where
               movies is an array containing only the updated movie
               or appropriate status code indicating reason for failure.
-    @TODO: Implement ability to modify the actors in this movie.
     """
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-    def modify_exiting_movie(movie_id):
+    @requires_auth('patch:movies')
+    def modify_exiting_movie(payload, movie_id):
         movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
         if not movie:
             abort(404)
@@ -413,6 +418,16 @@ def create_app(test_config=None):
             "error": 500,
             "message": "Internal server error"
         }), 500
+
+    @app.errorhandler(AuthError)
+    def handle_auth_error(e):
+        print("HELLO AuthError!")
+        return jsonify({
+            "success": False,
+            "error": e.error['code'],
+            "code": e.status_code,
+            "message": e.error['description'],
+        }), e.status_code
 
     return app
 
