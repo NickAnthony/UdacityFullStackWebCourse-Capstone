@@ -23,7 +23,9 @@ def create_app(test_config=None):
 
     @app.route('/')
     def get_index():
-        return "Welcome to Nick's Casting Agency Site!"
+        return jsonify({"
+                welcome_message": "Welcome to Nick's Casting Agency Site!"
+            })
 
     # ----------------------------------------------------------------------- #
     # Actor endpoints/routes.

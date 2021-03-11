@@ -1,6 +1,8 @@
 # UdacityFullStackWebCourse-Capstone
 
-UdacityFullStackWebCourse Capstone Project
+UdacityFullStackWebCourse Capstone Project.
+
+The app is live at: https://nickanthony-casting-agency.herokuapp.com/
 
 ## Casting Agency Specifications
 
@@ -211,6 +213,10 @@ If the testing db was already created:
 ### Run the tests
 
 `python test_app.py`
+
+All tests will run with the default executive director token above.  If more
+than 50% of the tests are failing with 401, then it is likely the the JWTs
+have expired.
 
 ## Python Code Style
 
