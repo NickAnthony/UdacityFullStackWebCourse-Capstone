@@ -22,18 +22,8 @@ def create_app(test_config=None):
         return response
 
     @app.route('/')
-    def get_greeting():
-        excited = os.environ.get('EXCITED')
-        if not excited:
-            excited = 'true'
-        greeting = "Hello"
-        if excited == 'true':
-            greeting = greeting + "!!!!!"
-        return greeting
-
-    @app.route('/coolkids')
-    def be_cool():
-        return "Be cool, man, be coooool! You're almost a FSND grad!"
+    def get_index():
+        return "Welcome to Nick's Casting Agency Site!"
 
     # ----------------------------------------------------------------------- #
     # Actor endpoints/routes.
