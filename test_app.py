@@ -338,8 +338,7 @@ class CastingAgencyTestCase(unittest.TestCase):
                                       'name': self.new_actor['name'],
                                       'age': 30,
                                       'gender': "Female"
-                                  }
-                                  )
+                                  })
         data = json.loads(res.data)
         new_actor_id = data['actors'][0]['id']
         self.assertEqual(res.status_code, 200)
@@ -404,8 +403,7 @@ class CastingAgencyTestCase(unittest.TestCase):
                                       'name': self.new_actor['name'],
                                       'age': self.new_actor['age'],
                                       'gender': self.new_actor['gender']
-                                  }
-                                  )
+                                  })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -541,7 +539,6 @@ class CastingAgencyTestCase(unittest.TestCase):
                 'title': self.new_movie['title'],
                 'release_date': self.new_movie['release_date']})
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Permission not found.')
@@ -589,13 +586,21 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertFalse(movie_exists)
 
     def test_delete_movie_throws_404_for_bad_movie_id(self):
-        res = self.client().delete('/actors/100000',
+        res = self.client().delete('/movies/100000',
                                    headers=self.ex_producer_token)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Resource was not found')
+
+    def test_delete_movie_throws_401_for_wrong_permissions(self):
+        res = self.client().delete('/movies/0',
+                                   headers=self.casting_director_token)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Permission not found.')
 
     # ------------------------------------------------------------
     # Testing '/movies' PATCH endpoint
@@ -618,8 +623,7 @@ class CastingAgencyTestCase(unittest.TestCase):
                                   json={
                                       'title': self.new_movie['title'],
                                       'release_date': '2024-02-04'
-                                  }
-                                  )
+                                  })
         data = json.loads(res.data)
         new_movie_id = data['movies'][0]['id']
         self.assertEqual(res.status_code, 200)
@@ -655,8 +659,7 @@ class CastingAgencyTestCase(unittest.TestCase):
                             headers=self.ex_producer_token,
                             json={
                                 'actors': [actor_id]
-                            }
-                            )
+                            })
         # Assert the new movie was patched correctly.
         res = self.client().get('/movies')
         data = json.loads(res.data)
