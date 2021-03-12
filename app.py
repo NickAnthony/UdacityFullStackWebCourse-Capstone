@@ -23,8 +23,8 @@ def create_app(test_config=None):
 
     @app.route('/')
     def get_index():
-        return jsonify({"
-                welcome_message": "Welcome to Nick's Casting Agency Site!"
+        return jsonify({
+                "welcome_message": "Welcome to Nick's Casting Agency Site!"
             })
 
     # ----------------------------------------------------------------------- #
@@ -55,6 +55,29 @@ def create_app(test_config=None):
         return jsonify({
                 'success': True,
                 'actors': format_actors(actors)
+            })
+
+    """
+    GET /actors/%d/movies
+        - A Public Endpoint that fetches a list of movies for a given actor.
+          Returns a 404 if the actor <id> is not found.
+        - Permissions required: None
+        - Request Arguments: None
+        - Returns:
+          - Status code 200 and json
+            {"success": True, "actors": actors, "movies": movies}
+            where actor is the queried actor and movies is a list of all movies
+            that actor is in.
+    """
+    @app.route('/actors/<int:actor_id>/movies', methods=['GET'])
+    def get_movies_for_actor(actor_id):
+        actor = Actor.query.get(actor_id)
+        if not actor:
+            abort(404)
+        return jsonify({
+                'success': True,
+                'actor': actor.format(),
+                'movies': format_movies(actor.movies)
             })
 
     """
@@ -101,7 +124,6 @@ def create_app(test_config=None):
           - Status code 200 and json {"success": True, "actors": [actor]} where
               actors is an array containing only the newly created actor
               or appropriate status code indicating reason for failure
-    @TODO: Implement ability to associate an actor with a movie.
     """
     @app.route('/actors', methods=['POST'])
     @requires_auth('post:actors')
