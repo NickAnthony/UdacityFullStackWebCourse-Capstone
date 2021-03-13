@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
 from models import setup_db, Actor, Movie
+from env import executive_producer_token, casting_director_token
 
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -56,10 +57,10 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # Executive Producer Token, used for testing
         self.ex_producer_token = {
-            'authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikh6Z3Z4U3lDNm9fU0t4c25nSnR0ZiJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYXBwLW5pY2thbnRob255LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDBkMDQ0OGZmY2JlMjAwNmE4ODY2MWUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeSIsImlhdCI6MTYxNTQ1OTUxOSwiZXhwIjoxNjE1NTQ1OTE5LCJhenAiOiJFeFAybXhIbzR3QU1ZQjBNR2M5bm1XSHhTSGNmTzFldSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.phkPAht9VAWTvr3NJ5Z9PJJejV-wGes53I0YQfiZFwXoqgOmarM4fB21VGFOhYtRjcc1SbBZCWiePM2RA0NhMDIo57CX5P6OtkSkfk9NvwzLMmGxrS8ln_68rjc75pcT6jhFZk-JJaC0hQgyVgyZwC9Sm9Ha5zOI6wr4aW72klEUukMOn-Q7vd6xwDmozVyCZaHGt2LqDZMQlZd91v7mzopvoJ1PFn7093GfrSQjxMydBNUOhCreJ9os0KYai6ZlW3iafnVYYPgHQtf9T1nW7TGRGUWzdE5F9UIMCv58FNGg3MHJBLmBCWlw8PEhK7Iv-s7xonc76scnrxwQHpe14Q"
+            'authorization': "Bearer %s" % executive_producer_token
         }
         self.casting_director_token = {
-            'authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikh6Z3Z4U3lDNm9fU0t4c25nSnR0ZiJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYXBwLW5pY2thbnRob255LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDBkMDQ0OGZmY2JlMjAwNmE4ODY2MWUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeSIsImlhdCI6MTYxNTQ1OTYxMiwiZXhwIjoxNjE1NTQ2MDEyLCJhenAiOiJFeFAybXhIbzR3QU1ZQjBNR2M5bm1XSHhTSGNmTzFldSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.Xqx07bmW--Col44GTRWtDFRP5GFvKSgriCsSl1mAnjpi6gt3otiCNPVjixdWeOnq_e0C9ZI3Kl5PICv5SN2hH18Wr1sjLAYhu_i7o9S0eLIQFOLrHcld07dYDI0Bd2VtL3Cx0QZuLnK2XVeSkKpNdpVcNxYili-tUZLnBD4c6cu8tVnUS1TFZd_R7hAmshVe-r07SexOcb_IWRBsFxj5CVi2ecFKbIMFIvJS8f_rwuwTDxwoEcS993dWy8nP7E2yWRcjccMF0BxRAiuDHtiocgdvnY6gP9yaV4zFjoywAw871snLsLXOZQigWNW782oJwAreZy3RhYlJORKsxtGJ9A"
+            'authorization': "Bearer %s" % casting_director_token
         }
         self.fake_token = {
             'authorization': "Bearer faketokenJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikh6Z3Z4U3lDNm9fU0t4c25nSnR0ZiJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYXBwLW5pY2thbnRob255LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDBkMDQ0OGZmY2JlMjAwNmE4ODY2MWUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeSIsImlhdCI6MTYxNTI1NDkzOCwiZXhwIjoxNjE1MzQxMzM4LCJhenAiOiJFeFAybXhIbzR3QU1ZQjBNR2M5bm1XSHhTSGNmTzFldSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.kXVKUP8yrsCgWljqvUjZUPBdL_g9N4AEU2SkHRmN3mXD1zo74lQKindElF5j0suPBc2N9G6JkZJ5GiBTcjZsPCyRW2N9IGvI8hs1aPZSn4E6g_XNAmECC3bwpOhCr78jDPR0ZaqL1dWzCIJnSmpHxUVc4wapIRJOTHJkxdMGj2Bh7Y_CMi7KdeZfULrn9hAg1aHd1eDSiMRQhshI5R4FWTZ3L5ujw7TtBNlGn6wXHqZ4h6da8Cy4nVkKde3g9wkq0Hy3CRdrooZGQuPjgqtx7K9RKI77z9OqvIheZQYiimtdAPESVpagfo0NXrz-3aGnz3ywBtYdbVIV0o7ER6DTrw"
@@ -74,12 +75,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         for movie in all_movies:
             movie.delete()
         pass
-
-    """
-    @TODO
-    Write at least one test for each test for successful operation and for
-    expected errors.
-    """
 
     # ------------------------------------------------------------
     # Testing '/actors' GET endpoint
@@ -96,6 +91,37 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['actors'][0]['name'])
         self.assertTrue(data['actors'][0]['age'])
         self.assertTrue(data['actors'][0]['gender'])
+
+    # ------------------------------------------------------------
+    # Testing '/actors/%id/movies' GET endpoint
+    # ------------------------------------------------------------
+    def test_get_movies_for_actor_succeeds(self):
+        # Get the existing actor and movie.
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        actor_id = data['actors'][0]['id']
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        movie_id = data['movies'][0]['id']
+        # Check the endpoint defaults to 0 for no movies.
+        res = self.client().get('/actors/%d/movies' % actor_id)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['actor']['id'], actor_id)
+        self.assertEqual(len(data['movies']), 0)
+        # Associate the movie and the actor.
+        res = self.client().patch('/actors/%d' % actor_id,
+                                  headers=self.ex_producer_token,
+                                  json={'movies': [movie_id]})
+        # Check the endpoint now shoes 1 movie.
+        res = self.client().get('/actors/%d/movies' % actor_id)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['actor']['id'], actor_id)
+        self.assertEqual(len(data['movies']), 1)
+        self.assertEqual(data['movies'][0]['id'], movie_id)
 
     # ------------------------------------------------------------
     # Testing '/actors' POST endpoint
@@ -378,8 +404,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         # Patch the new actor just inserted.
         res = self.client().patch('/actors/%d' % new_actor_id,
                                   headers=self.ex_producer_token,
-                                  json={'movies': [movie_id]}
-                                  )
+                                  json={'movies': [movie_id]})
         data = json.loads(res.data)
         # Assert the new actor was patched.
         res = self.client().get('/actors')
@@ -424,6 +449,37 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertTrue(data['movies'][0]['title'])
         self.assertTrue(data['movies'][0]['release_date'])
+
+    # ------------------------------------------------------------
+    # Testing '/movies/%id/actors' GET endpoint
+    # ------------------------------------------------------------
+    def test_get_actors_for_movie_succeeds(self):
+        # Get the existing actor and movie.
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        actor_id = data['actors'][0]['id']
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        movie_id = data['movies'][0]['id']
+        # Check the endpoint defaults to 0 for no actors.
+        res = self.client().get('/movies/%d/actors' % actor_id)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['movie']['id'], movie_id)
+        self.assertEqual(len(data['actors']), 0)
+        # Associate the movie and the actor.
+        res = self.client().patch('/movies/%d' % movie_id,
+                                  headers=self.ex_producer_token,
+                                  json={'actors': [actor_id]})
+        # Check the endpoint now shoes 1 movie.
+        res = self.client().get('/movies/%d/actors' % movie_id)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['movie']['id'], movie_id)
+        self.assertEqual(len(data['actors']), 1)
+        self.assertEqual(data['actors'][0]['id'], actor_id)
 
     # ------------------------------------------------------------
     # Testing '/movies' POST endpoint

@@ -159,7 +159,6 @@ The Casting Agency models a company that is responsible for creating movies and 
     - Can view actors and movies.
     - Has permissions:
       - None, get actors/movies are public endpoints
-    - @TODO: Implement  
 2. Casting Director
     - All permissions a Casting Assistant has and…
     - Add or delete an actor from the database
@@ -169,7 +168,6 @@ The Casting Agency models a company that is responsible for creating movies and 
       - `patch:actors`
       - `delete:actors`
       - `patch:movies`
-    - @TODO: Implement
 3. Executive Producer
     - All permissions a Casting Director has and…
     - Add or delete a movie from the database
@@ -180,7 +178,6 @@ The Casting Agency models a company that is responsible for creating movies and 
       - `post:movies`
       - `patch:movies`
       - `delete:movies`
-    - @TODO: Implement
 
 ### Tokens
 
@@ -194,11 +191,11 @@ N/A
 
 2. Casting Director
 
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikh6Z3Z4U3lDNm9fU0t4c25nSnR0ZiJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYXBwLW5pY2thbnRob255LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDBkMDQ0OGZmY2JlMjAwNmE4ODY2MWUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeSIsImlhdCI6MTYxNTQ1OTYxMiwiZXhwIjoxNjE1NTQ2MDEyLCJhenAiOiJFeFAybXhIbzR3QU1ZQjBNR2M5bm1XSHhTSGNmTzFldSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.Xqx07bmW--Col44GTRWtDFRP5GFvKSgriCsSl1mAnjpi6gt3otiCNPVjixdWeOnq_e0C9ZI3Kl5PICv5SN2hH18Wr1sjLAYhu_i7o9S0eLIQFOLrHcld07dYDI0Bd2VtL3Cx0QZuLnK2XVeSkKpNdpVcNxYili-tUZLnBD4c6cu8tVnUS1TFZd_R7hAmshVe-r07SexOcb_IWRBsFxj5CVi2ecFKbIMFIvJS8f_rwuwTDxwoEcS993dWy8nP7E2yWRcjccMF0BxRAiuDHtiocgdvnY6gP9yaV4zFjoywAw871snLsLXOZQigWNW782oJwAreZy3RhYlJORKsxtGJ9A
+See env.py, casting_director_token
 
 3. Executive Producer
 
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikh6Z3Z4U3lDNm9fU0t4c25nSnR0ZiJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYXBwLW5pY2thbnRob255LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDBkMDQ0OGZmY2JlMjAwNmE4ODY2MWUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeSIsImlhdCI6MTYxNTQ1OTUxOSwiZXhwIjoxNjE1NTQ1OTE5LCJhenAiOiJFeFAybXhIbzR3QU1ZQjBNR2M5bm1XSHhTSGNmTzFldSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.phkPAht9VAWTvr3NJ5Z9PJJejV-wGes53I0YQfiZFwXoqgOmarM4fB21VGFOhYtRjcc1SbBZCWiePM2RA0NhMDIo57CX5P6OtkSkfk9NvwzLMmGxrS8ln_68rjc75pcT6jhFZk-JJaC0hQgyVgyZwC9Sm9Ha5zOI6wr4aW72klEUukMOn-Q7vd6xwDmozVyCZaHGt2LqDZMQlZd91v7mzopvoJ1PFn7093GfrSQjxMydBNUOhCreJ9os0KYai6ZlW3iafnVYYPgHQtf9T1nW7TGRGUWzdE5F9UIMCv58FNGg3MHJBLmBCWlw8PEhK7Iv-s7xonc76scnrxwQHpe14Q
+See env.py, executive_producer_token
 
 ## Testing
 
@@ -217,6 +214,16 @@ If the testing db was already created:
 All tests will run with the default executive director token above.  If more
 than 50% of the tests are failing with 401, then it is likely the the JWTs
 have expired.
+
+### Live test: test_heroku_app.py
+
+Because there is no front end, I wrote this script to test out the endpoints
+live on heroku!
+
+`python test_heroku_app.py --help`
+
+The script will run queries against the live heroku application!  You can try
+a couple pre-populated movies and actors.
 
 ## Python Code Style
 

@@ -65,7 +65,7 @@ def create_app(test_config=None):
         - Request Arguments: None
         - Returns:
           - Status code 200 and json
-            {"success": True, "actors": actors, "movies": movies}
+            {"success": True, "actor": actor, "movies": movies}
             where actor is the queried actor and movies is a list of all movies
             that actor is in.
     """
@@ -241,6 +241,29 @@ def create_app(test_config=None):
             })
 
     """
+    GET /movies/%d/actors
+        - A Public Endpoint that fetches a list of actors for a given movie.
+          Returns a 404 if the actor <id> is not found.
+        - Permissions required: None
+        - Request Arguments: None
+        - Returns:
+          - Status code 200 and json
+            {"success": True, "movie": movie, "actors": actors}
+            where movie is the queried movie and actors is a list of all actors
+            in the movie.
+    """
+    @app.route('/movies/<int:movie_id>/actors', methods=['GET'])
+    def get_actors_for_movie(movie_id):
+        movie = Movie.query.get(movie_id)
+        if not movie:
+            abort(404)
+        return jsonify({
+                'success': True,
+                'movie': movie.format(),
+                'actors': format_actors(movie.actors)
+            })
+
+    """
     DELETE /movies
         - A Public Endpoint that deletes an existing movie from the database.
           Returns a 404 if the movie <id> is not found.
@@ -282,7 +305,6 @@ def create_app(test_config=None):
           - Status code 200 and json {"success": True, "movies": [movie]} where
               movies is an array containing only the newly created movie
               or appropriate status code indicating reason for failure
-    @TODO: Implement ability to associate actors with this movie.
     """
     @app.route('/movies', methods=['POST'])
     @requires_auth('post:movies')

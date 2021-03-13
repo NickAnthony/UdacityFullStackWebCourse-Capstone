@@ -1,8 +1,8 @@
+import json
+import os
 from sqlalchemy import Column, String, Integer, Date, ForeignKey, create_engine
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-import json
-import os
 
 database_path = os.environ.get('DATABASE_URL')
 if not database_path:
