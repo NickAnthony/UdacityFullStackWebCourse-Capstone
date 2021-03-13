@@ -90,8 +90,8 @@ def patch_actor():
     old_age = existing_actor['age']
     existing_actor['age'] = 33
     r = requests.patch(f'{HEROKU_DOMAIN}/actors/%d' % existing_actor['id'],
-                      headers=casting_director_token,
-                      json=existing_actor)
+                       headers=casting_director_token,
+                       json=existing_actor)
     if r.status_code == 200:
         actor = r.json()[0]
         print("Successfully changed %s from age %d to %d" % (
@@ -154,8 +154,8 @@ def patch_movie():
     old_release_date = existing_movie['release_date']
     existing_movie['release_date'] = "2020-01-01"
     r = requests.patch(f'{HEROKU_DOMAIN}/movies/%d' % existing_movie['id'],
-                      headers=casting_director_token,
-                      json=existing_movie)
+                       headers=casting_director_token,
+                       json=existing_movie)
     if r.status_code == 200:
         movie = r.json()[0]
         print("Successfully changed %s from age %d to %d" % (

@@ -562,7 +562,8 @@ class CastingAgencyTestCase(unittest.TestCase):
 
     def test_create_movie_throws_400_for_missing_title(self):
         res = self.client().post('/movies', headers=self.ex_producer_token,
-                                 json={'release_date': self.new_movie['release_date']})
+                                 json={'release_date':
+                                       self.new_movie['release_date']})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
