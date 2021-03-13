@@ -10,9 +10,6 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from app import create_app
 from models import setup_db, Actor, Movie
-from env import (
-    executive_producer_token
-)
 
 EXECUTIVE_PRODUCER_TOKEN = os.environ.get('EXECUTIVE_PRODUCER_TOKEN')
 database_path = os.environ.get('DATABASE_URL',

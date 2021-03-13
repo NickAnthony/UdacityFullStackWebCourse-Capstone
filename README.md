@@ -320,6 +320,7 @@ From within the root directory, first ensure you're working with your created
 export FLASK_APP=app
 export FLASK_DEBUG=true
 export FLASK_ENV=development
+source setup.sh
 flask run
 ```
 
@@ -346,6 +347,12 @@ Create a testing database usg psql.
 If the testing db was already created:
 
 `dropdb casting_agency_test && createdb casting_agency_test`
+
+Make sure the environment variables are set:
+
+```
+source setup.sh
+```
 
 ### Run the tests
 
