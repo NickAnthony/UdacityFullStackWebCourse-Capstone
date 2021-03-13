@@ -11,7 +11,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
 from models import setup_db, Actor, Movie
-from env import executive_producer_token, casting_director_token
+from env import (
+    executive_producer_token,
+    casting_director_token,
+    fake_token
+)
 
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -67,7 +71,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             'authorization': "Bearer %s" % casting_director_token
         }
         self.fake_token = {
-            'authorization': "Bearer faketokenJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikh6Z3Z4U3lDNm9fU0t4c25nSnR0ZiJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYXBwLW5pY2thbnRob255LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDBkMDQ0OGZmY2JlMjAwNmE4ODY2MWUiLCJhdWQiOiJjYXN0aW5nLWFnZW5jeSIsImlhdCI6MTYxNTI1NDkzOCwiZXhwIjoxNjE1MzQxMzM4LCJhenAiOiJFeFAybXhIbzR3QU1ZQjBNR2M5bm1XSHhTSGNmTzFldSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.kXVKUP8yrsCgWljqvUjZUPBdL_g9N4AEU2SkHRmN3mXD1zo74lQKindElF5j0suPBc2N9G6JkZJ5GiBTcjZsPCyRW2N9IGvI8hs1aPZSn4E6g_XNAmECC3bwpOhCr78jDPR0ZaqL1dWzCIJnSmpHxUVc4wapIRJOTHJkxdMGj2Bh7Y_CMi7KdeZfULrn9hAg1aHd1eDSiMRQhshI5R4FWTZ3L5ujw7TtBNlGn6wXHqZ4h6da8Cy4nVkKde3g9wkq0Hy3CRdrooZGQuPjgqtx7K9RKI77z9OqvIheZQYiimtdAPESVpagfo0NXrz-3aGnz3ywBtYdbVIV0o7ER6DTrw"
+            'authorization': "Bearer %s" % fake_token
         }
 
     def tearDown(self):
@@ -290,7 +294,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'Authorization malformed.')
+        self.assertEqual(data['message'],
+                         'Unable to parse authentication token.')
 
     # ------------------------------------------------------------
     # Testing '/actors/${actor_id}' DELETE endpoint
