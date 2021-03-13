@@ -11,14 +11,12 @@ from flask_sqlalchemy import SQLAlchemy
 from app import create_app
 from models import setup_db, Actor, Movie
 from env import (
-    executive_producer_token,
-    casting_director_token,
-    fake_token
+    executive_producer_token
 )
 
-database_path = os.environ.get('DATABASE_URL')
-if not database_path:
-    database_path = "postgres://localhost:5432/casting_agency"
+EXECUTIVE_PRODUCER_TOKEN = os.environ.get('EXECUTIVE_PRODUCER_TOKEN')
+database_path = os.environ.get('DATABASE_URL',
+                               "postgres://localhost:5432/casting_agency")
 
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -51,13 +49,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # Executive Producer Token, used for testing
         self.ex_producer_token = {
-            'authorization': "Bearer %s" % executive_producer_token
-        }
-        self.casting_director_token = {
-            'authorization': "Bearer %s" % casting_director_token
-        }
-        self.fake_token = {
-            'authorization': "Bearer %s" % fake_token
+            'authorization': "Bearer %s" % EXECUTIVE_PRODUCER_TOKEN
         }
 
     def tearDown(self):

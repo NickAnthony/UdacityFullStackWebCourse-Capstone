@@ -17,6 +17,10 @@ from env import (
     fake_token
 )
 
+EXECUTIVE_PRODUCER_TOKEN = os.environ.get('EXECUTIVE_PRODUCER_TOKEN')
+CASTING_DIRECTOR_TOKEN = os.environ.get('CASTING_DIRECTOR_TOKEN')
+FAKE_TOKEN = os.environ.get('FAKE_TOKEN')
+
 
 class CastingAgencyTestCase(unittest.TestCase):
     """This class represents the Casting Agency test case"""
@@ -65,13 +69,13 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         # Executive Producer Token, used for testing
         self.ex_producer_token = {
-            'authorization': "Bearer %s" % executive_producer_token
+            'authorization': "Bearer %s" % EXECUTIVE_PRODUCER_TOKEN
         }
         self.casting_director_token = {
-            'authorization': "Bearer %s" % casting_director_token
+            'authorization': "Bearer %s" % CASTING_DIRECTOR_TOKEN
         }
         self.fake_token = {
-            'authorization': "Bearer %s" % fake_token
+            'authorization': "Bearer %s" % FAKE_TOKEN
         }
 
     def tearDown(self):

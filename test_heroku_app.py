@@ -3,15 +3,16 @@ import json
 from flask import request
 from urllib.request import urlopen
 import requests
-from env import executive_producer_token, casting_director_token
 
 HEROKU_DOMAIN = "https://nickanthony-casting-agency.herokuapp.com"
+EXECUTIVE_PRODUCER_TOKEN = os.environ.get('EXECUTIVE_PRODUCER_TOKEN')
+CASTING_DIRECTOR_TOKEN = os.environ.get('CASTING_DIRECTOR_TOKEN')
 
-ex_producer_token = {
-    'authorization': "Bearer %s" % executive_producer_token
+ex_producer_token_auth = {
+    'authorization': "Bearer %s" % EXECUTIVE_PRODUCER_TOKEN
 }
-casting_director_token = {
-    'authorization': "Bearer %s" % casting_director_token
+casting_director_token_auth = {
+    'authorization': "Bearer %s" % CASTING_DIRECTOR_TOKEN
 }
 
 parser = argparse.ArgumentParser(
@@ -60,7 +61,7 @@ def post_actor():
         'gender': "Femail"
     }
     r = requests.post(f'{HEROKU_DOMAIN}/actors',
-                      headers=casting_director_token,
+                      headers=casting_director_token_auth,
                       json=new_actor)
     if r.status_code == 200:
         print("Successfully added ", new_actor['name'])
@@ -75,7 +76,7 @@ def post_actor_2():
         'gender': "Male"
     }
     r = requests.post(f'{HEROKU_DOMAIN}/actors',
-                      headers=casting_director_token,
+                      headers=casting_director_token_auth,
                       json=new_actor)
     if r.status_code == 200:
         print("Successfully added ", new_actor['name'])
@@ -90,7 +91,7 @@ def patch_actor():
     old_age = existing_actor['age']
     existing_actor['age'] = 33
     r = requests.patch(f'{HEROKU_DOMAIN}/actors/%d' % existing_actor['id'],
-                       headers=casting_director_token,
+                       headers=casting_director_token_auth,
                        json=existing_actor)
     if r.status_code == 200:
         actor = r.json()[0]
@@ -106,7 +107,7 @@ def delete_actor():
     actors = r.json()
     actor_id = actors[0]['id']
     r = requests.post(f'{HEROKU_DOMAIN}/actors/%d' % actor_id,
-                      headers=casting_director_token)
+                      headers=casting_director_token_auth)
     if r.status_code == 200:
         print("Successfully deleted ", actors[0]['name'])
     else:
@@ -125,7 +126,7 @@ def post_movie():
         "release_date": "2012-09-21"
     }
     r = requests.post(f'{HEROKU_DOMAIN}/movies',
-                      headers=ex_producer_token,
+                      headers=ex_producer_token_auth,
                       json=new_movie)
     if r.status_code == 200:
         print("Successfully added ", new_movie['title'])
@@ -139,7 +140,7 @@ def post_movie_2():
         "release_date": "2001-12-07"
     }
     r = requests.post(f'{HEROKU_DOMAIN}/movies',
-                      headers=ex_producer_token,
+                      headers=ex_producer_token_auth,
                       json=new_movie)
     if r.status_code == 200:
         print("Successfully added ", new_movie['title'])
@@ -154,7 +155,7 @@ def patch_movie():
     old_release_date = existing_movie['release_date']
     existing_movie['release_date'] = "2020-01-01"
     r = requests.patch(f'{HEROKU_DOMAIN}/movies/%d' % existing_movie['id'],
-                       headers=casting_director_token,
+                       headers=casting_director_token_auth,
                        json=existing_movie)
     if r.status_code == 200:
         movie = r.json()[0]
@@ -170,7 +171,7 @@ def delete_movie():
     movies = r.json()
     movid_id = movies[0]['id']
     r = requests.post(f'{HEROKU_DOMAIN}/movies/%d' % movid_id,
-                      headers=ex_producer_token)
+                      headers=ex_producer_token_auth)
     if r.status_code == 200:
         print("Successfully deleted ", movies[0]['title'])
     else:
