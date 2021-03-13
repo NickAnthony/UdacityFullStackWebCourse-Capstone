@@ -10,6 +10,7 @@ The Casting Agency models a company that is responsible for creating movies and 
 
 ## Models
 
+### Movie
 - Movies with attributes title and release date
     - Table name: `movies`
     - Columns:
@@ -17,6 +18,24 @@ The Casting Agency models a company that is responsible for creating movies and 
       - `title`: String, Movie title
       - `release_date`: Date, Release date
       - `actors`: Backref to actors table; list of actors in movie
+
+#### Insert example
+  ```Python
+    req_release_date = datetime.datetime.strptime("2022-01-15",
+        "%Y-%m-%d").date()
+    movie = Movie(title=req_title, release_date=req_release_date)
+    movie.insert()
+  ```
+#### Update example
+  ```Python
+      movie = Movie.query.filter(Movie.id == id).one_or_none()
+      new_release_date = datetime.datetime.strptime("2022-01-15",
+          "%Y-%m-%d").date()
+      movie.release_date = new_release_date
+      movie.update()
+  ```
+
+## Actor
 - Actors with attributes name, age and gender
     - Table name: `actors`
     - Columns:
@@ -24,6 +43,21 @@ The Casting Agency models a company that is responsible for creating movies and 
       - `age`: Integer, age
       - `gender`: String, genter
       - `movies`: Backref to movies table; list of movies actor is in
+
+#### Insert example
+  ```Python
+    actor = Actor(name=req_name, age=req_age, gender=req_gender)
+    actor.insert()
+  ```
+
+#### Update example
+  ```Python
+    actor = Actor.query.filter(Actor.id == id).one_or_none()
+    actor.age = 28
+    actor.update()
+  ```
+
+## movie_actor_association
 - Association table between movies and actors
     - Table name: `movie_actor_association`
     - Associates many-to-many relationship between movies and actors

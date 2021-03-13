@@ -41,7 +41,57 @@ movie_actor_association = db.Table(
 )
 
 
-class Actor(db.Model):
+class GeneralModel():
+    def insert(self):
+        """Inserts a new model into the database
+
+        The model must have a unique id or null id
+        EXAMPLE:
+            model = Model(req_param=req_param)
+            model.insert()
+        """
+        exception = None
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise(e)
+
+    def delete(self):
+        """Deletes an existing model from the database
+
+        The model must exist in the database
+        EXAMPLE
+            model = Model.query.first()
+            model.delete()
+        """
+        exception = None
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise(e)
+
+    def update(self):
+        """Updates an existing model in the database
+
+        the model must exist in the database
+        EXAMPLE
+            model = Model.query.first()
+            model.my_number = 41
+            model.update()
+        """
+        exception = None
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise(e)
+
+
+class Actor(db.Model, GeneralModel):
     """Actor
 
     Represents an actor with attributes name, age, and gender.
@@ -71,44 +121,11 @@ class Actor(db.Model):
             'movies': formatted_movies
         }
 
-    def insert(self):
-        """Inserts a new model into the database
-
-        The model must have a unique id or null id
-        EXAMPLE:
-            actor = Actor(name=req_name, age=req_age, gender=req_gender)
-            actor.insert()
-        """
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        """Deletes an existing model from the database
-
-        The model must exist in the database
-        EXAMPLE
-            actor = Actor(name=req_name, age=req_age, gender=req_gender)
-            actor.delete()
-        """
-        db.session.delete(self)
-        db.session.commit()
-
-    def update(self):
-        """Updates an existing model in the database
-
-        the model must exist in the database
-        EXAMPLE
-            actor = Actor.query.filter(Actor.id == id).one_or_none()
-            actor.age = 28
-            actor.update()
-        """
-        db.session.commit()
-
     def __repr__(self):
         return f'<Actor {self.id} {self.name}>'
 
 
-class Movie(db.Model):
+class Movie(db.Model, GeneralModel):
     """Movie
 
     Represents a movie with attributes title and release date.
@@ -124,45 +141,6 @@ class Movie(db.Model):
     def __init__(self, title, release_date):
         self.title = title
         self.release_date = release_date
-
-    def insert(self):
-        """Inserts a new model into the database
-
-        The model must have a unique id or null id
-        EXAMPLE
-            req_release_date = datetime.datetime.strptime("2022-01-15",
-                "%Y-%m-%d").date()
-            movie = Movie(title=req_title, release_date=req_release_date)
-            movie.insert()
-        """
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        """Deletes an existing model from the database
-
-        The model must exist in the database
-        EXAMPLE
-            req_release_date = datetime.datetime.strptime("2022-01-15",
-                "%Y-%m-%d").date()
-            movie = Movie(title=req_title, release_date=req_release_date)
-            movie.delete()
-        """
-        db.session.delete(self)
-        db.session.commit()
-
-    def update(self):
-        """Updates an existing model in the database
-
-        The model must exist in the database
-        EXAMPLE
-            movie = Movie.query.filter(Movie.id == id).one_or_none()
-            new_release_date = datetime.datetime.strptime("2022-01-15",
-                "%Y-%m-%d").date()
-            movie.release_date = new_release_date
-            movie.update()
-        """
-        db.session.commit()
 
     def format(self):
         formatted_actors = [actor.id for actor in self.actors]
