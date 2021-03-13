@@ -1,5 +1,6 @@
 import datetime
 import os
+import sys
 from auth import (
     AuthError,
     requires_auth
@@ -118,6 +119,7 @@ def create_app(test_config=None):
                 'delete': actor_to_delete_id
             })
         except Exception as e:
+            print(sys.exc_info())
             abort(422)
 
     """
@@ -176,6 +178,7 @@ def create_app(test_config=None):
                 'actors': format_actors([new_actor])
             })
         except Exception as e:
+            print(sys.exc_info())
             abort(422)
 
     """
@@ -229,6 +232,7 @@ def create_app(test_config=None):
                 'actors': format_actors([actor])
             })
         except Exception as e:
+            print(sys.exc_info())
             abort(422)
 
     # ----------------------------------------------------------------------- #
@@ -301,6 +305,7 @@ def create_app(test_config=None):
                 'delete': movie_to_delete_id
             })
         except Exception as e:
+            print(sys.exc_info())
             abort(422)
 
     """
@@ -362,6 +367,7 @@ def create_app(test_config=None):
                 'movies': format_movies([new_movie])
             })
         except Exception as e:
+            print(sys.exc_info())
             abort(422)
 
     """
@@ -422,6 +428,7 @@ def create_app(test_config=None):
                 'movies': format_movies([movie])
             })
         except Exception as e:
+            print(sys.exc_info())
             abort(422)
 
     # ----------------------------------------------------------------------- #

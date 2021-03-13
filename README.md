@@ -4,9 +4,25 @@ UdacityFullStackWebCourse Capstone Project.
 
 The app is live at: https://nickanthony-casting-agency.herokuapp.com/
 
-## Casting Agency Specifications
+Please describe the motivation behind this project as required by the rubric!
 
-The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. You are an Executive Producer within the company and are creating a system to simplify and streamline your process.
+Motivation is like: Why did you make this project?
+Few Examples:
+
+This project is the Capstone in the Udacity Full Stack Web Developer Nanodegree.
+I was hoping to leverage many of the different skills I learned in the course
+and create a project that incorporates all the different pieces of the course.
+
+---
+
+## Casting Agency Project Prompt
+
+The Casting Agency models a company that is responsible for creating movies and
+managing and assigning actors to those movies. You are an Executive Producer
+within the company and are creating a system to simplify and streamline your
+process.
+
+---
 
 ## Models
 
@@ -35,7 +51,7 @@ The Casting Agency models a company that is responsible for creating movies and 
       movie.update()
   ```
 
-## Actor
+### Actor
 - Actors with attributes name, age and gender
     - Table name: `actors`
     - Columns:
@@ -57,10 +73,12 @@ The Casting Agency models a company that is responsible for creating movies and 
     actor.update()
   ```
 
-## movie_actor_association
+### movie_actor_association
 - Association table between movies and actors
     - Table name: `movie_actor_association`
     - Associates many-to-many relationship between movies and actors
+
+---
 
 ## Endpoints
 
@@ -175,6 +193,7 @@ The Casting Agency models a company that is responsible for creating movies and 
       movies is an array containing only the updated movie
       or appropriate status code indicating reason for failure.
 
+---
 
 ## Authentication
 
@@ -231,9 +250,96 @@ See env.py, casting_director_token
 
 See env.py, executive_producer_token
 
-## Testing
+---
+
+## Running the Server Locally
+
+### Installing Dependencies
+
+#### Python 3.7
+
+Follow instructions to install the correct version of Python for your platform
+in the python docs.
+
+#### Virtual Environment (venv)
+
+We recommend working within a virtual environment whenever using Python for
+projects. This keeps your dependencies for each project separate and organaized.
+Instructions for setting up a virual enviornment for your platform can be found
+in the python docs.
+
+```
+python -m venv venv
+venv/bin/activate
+```
+
+#### PIP Dependecies
+
+Once you have your `venv` setup and running, install dependencies by navigating
+to the root directory and running:
+
+```
+pip install -r requirements.txt
+```
+
+This will install all of the required packages included in the requirements.txt
+file.
+
+#### Local Database Setup
+
+Create your database using PostgreSQL.  Ensure that you have PostgreSQL
+installed with:
+
+```
+psql --version
+```
+
+Once that is done, create your local database:
+
+```
+createdb casting_agency
+```
+
+Once you create the database, open your terminal, navigate to the root folder,
+and run:
+
+```
+flask db init
+flask db migrate -m "Initial migration."
+flask db upgrade
+```
+
+After running, don't forget modify `'SQLALCHEMY_DATABASE_URI'` variable.
+
+#### Running the server
+
+From within the root directory, first ensure you're working with your created
+`venv`. To run the server, execute the following:
+
+```
+export FLASK_APP=app
+export FLASK_DEBUG=true
+export FLASK_ENV=development
+flask run
+```
+
+Setting the FLASK_ENV variable to development will detect file changes and
+restart the server automatically.
+
+Running the following command from the root directory will ensure you have a
+working local server running:
+
+```
+python test_local_app.py
+```
+
+---
+
+## Local Testing
 
 ### Set up
+
+Create a testing database usg psql.
 
 `createdb casting_agency_test`
 
@@ -243,11 +349,18 @@ If the testing db was already created:
 
 ### Run the tests
 
+To test the local install, run the following command from the root folder.
+
 `python test_app.py`
 
 All tests will run with the default executive director token above.  If more
 than 50% of the tests are failing with 401, then it is likely the the JWTs
 have expired.
+
+
+---
+
+## Live Testing
 
 ### Live test: test_heroku_app.py
 
@@ -258,6 +371,8 @@ live on heroku!
 
 The script will run queries against the live heroku application!  You can try
 a couple pre-populated movies and actors.
+
+---
 
 ## Python Code Style
 
