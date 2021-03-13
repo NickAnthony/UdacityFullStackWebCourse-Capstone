@@ -20,6 +20,7 @@ database_path = os.environ.get('DATABASE_URL')
 if not database_path:
     database_path = "postgres://localhost:5432/casting_agency"
 
+
 class CastingAgencyTestCase(unittest.TestCase):
     """This class represents the Casting Agency test case"""
 
