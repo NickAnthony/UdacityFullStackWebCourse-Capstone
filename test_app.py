@@ -2,7 +2,11 @@ import datetime
 import json
 import os
 import unittest
-from flask import abort, jsonify, request
+from flask import (
+    abort,
+    jsonify,
+    request
+)
 from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
