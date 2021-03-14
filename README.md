@@ -4,11 +4,6 @@ UdacityFullStackWebCourse Capstone Project.
 
 The app is live at: https://nickanthony-casting-agency.herokuapp.com/
 
-Please describe the motivation behind this project as required by the rubric!
-
-Motivation is like: Why did you make this project?
-Few Examples:
-
 This project is the Capstone in the Udacity Full Stack Web Developer Nanodegree.
 I was hoping to leverage many of the different skills I learned in the course
 and create a project that incorporates all the different pieces of the course.
@@ -240,15 +235,15 @@ https://fsnd-app-nickanthony.us.auth0.com/authorize?audience=casting-agency&resp
 
 1. Casting Assistant
 
-N/A
+    N/A
 
 2. Casting Director
 
-See env.py, casting_director_token
+    See setup.sh, CASTING_DIRECTOR_TOKEN
 
 3. Executive Producer
 
-See env.py, executive_producer_token
+    See setup.sh, EXECUTIVE_PRODUCER_TOKEN
 
 ---
 
@@ -268,7 +263,7 @@ projects. This keeps your dependencies for each project separate and organaized.
 Instructions for setting up a virual enviornment for your platform can be found
 in the python docs.
 
-```
+```Shell
 python -m venv venv
 venv/bin/activate
 ```
@@ -278,7 +273,7 @@ venv/bin/activate
 Once you have your `venv` setup and running, install dependencies by navigating
 to the root directory and running:
 
-```
+```Shell
 pip install -r requirements.txt
 ```
 
@@ -290,20 +285,20 @@ file.
 Create your database using PostgreSQL.  Ensure that you have PostgreSQL
 installed with:
 
-```
+```Shell
 psql --version
 ```
 
 Once that is done, create your local database:
 
-```
+```Shell
 createdb casting_agency
 ```
 
 Once you create the database, open your terminal, navigate to the root folder,
 and run:
 
-```
+```Shell
 flask db init
 flask db migrate -m "Initial migration."
 flask db upgrade
@@ -316,7 +311,7 @@ After running, don't forget modify `'SQLALCHEMY_DATABASE_URI'` variable.
 From within the root directory, first ensure you're working with your created
 `venv`. To run the server, execute the following:
 
-```
+```Shell
 export FLASK_APP=app
 export FLASK_DEBUG=true
 export FLASK_ENV=development
@@ -342,15 +337,19 @@ python test_local_app.py
 
 Create a testing database usg psql.
 
-`createdb casting_agency_test`
+```Shell
+createdb casting_agency_test
+```
 
 If the testing db was already created:
 
-`dropdb casting_agency_test && createdb casting_agency_test`
+```Shell
+dropdb casting_agency_test && createdb casting_agency_test
+```
 
 Make sure the environment variables are set:
 
-```
+```Shell
 source setup.sh
 ```
 
@@ -358,7 +357,9 @@ source setup.sh
 
 To test the local install, run the following command from the root folder.
 
-`python test_app.py`
+```Shell
+python test_app.py
+```
 
 All tests will run with the default executive director token above.  If more
 than 50% of the tests are failing with 401, then it is likely the the JWTs
@@ -374,7 +375,9 @@ have expired.
 Because there is no front end, I wrote this script to test out the endpoints
 live on heroku!
 
-`python test_heroku_app.py --help`
+```Shell
+python test_heroku_app.py --help
+```
 
 The script will run queries against the live heroku application!  You can try
 a couple pre-populated movies and actors.
@@ -386,4 +389,12 @@ a couple pre-populated movies and actors.
 All python files have been checked with `pycodestyle`.
 Using the following to double check code style:
 
-`pycodestyle <filename.py>`
+```Shell
+pycodestyle <filename.py>
+```
+
+---
+
+## Tech Stack
+
+This is the full tech stack for this application.
