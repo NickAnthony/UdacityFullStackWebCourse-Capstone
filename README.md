@@ -398,3 +398,37 @@ pycodestyle <filename.py>
 ## Tech Stack
 
 This is the full tech stack for this application.
+
+### Operating system
+
+I wrote this application using macOS Catalina 10.15.7.  It should work on
+most UNIX-based Operating Systems.
+
+All dependencies can be installed using either the `pip` package manager or
+the `brew` package manager.
+
+### Web server
+
+The web server technology I used is
+[Flask](https://www.fullstackpython.com/flask.html).
+
+I am using `Flask`, `Flask CORS` for Cross-Origin Resource Sharing, and
+`gunicorn` for Heroku deployment.
+
+### Database Management
+
+I am using `PostgreSQL 13.1` for the Database system.  For integration with
+flask and python, I am using [`SQLAlchemy`](https://www.sqlalchemy.org/)
+and `Flask-SQLAlchemy`.
+
+I am using `Flask-Migrate` to manage database versions.  Then I'm using
+`alembic` for the actual versioning scheme.  Finally, I'm using `psycopg2`
+to manage the database upgrades.
+
+### Script interpreter
+
+I am using `Python 3.7.7`.  As well as the following python modules:
+
+- `pycodestyle` for codestyle
+- `PyJWT` and `python-jose` for JWG authentication management
+- `pytest` for the local python test suite
