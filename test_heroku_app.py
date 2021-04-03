@@ -59,7 +59,7 @@ def post_actor():
     new_actor = {
         'name': "Amy Adams",
         'age': 46,
-        'gender': "Femail"
+        'gender': "Female"
     }
     r = requests.post(f'{HEROKU_DOMAIN}/actors',
                       headers=casting_director_token_auth,
