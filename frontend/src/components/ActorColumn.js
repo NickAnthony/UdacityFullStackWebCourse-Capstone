@@ -11,12 +11,32 @@ class ActorColumn extends React.Component {
      }
   }
   componentDidMount() {
-    fetch(HEROKU_DOMAIN + "/actors")
-        .then(response => response.json())
-        .then((result) => {
-          console.log(result.actors);
-          this.setState({ actors: result.actors });
-        });
+    this.setState({
+      actors: [
+        {
+          id: 1,
+          name: "George Clooney",
+          age: 59,
+          gender: "Male",
+          portait_url: "https://flxt.tmsimg.com/v9/AllPhotos/23213/23213_v9_bb.jpg",
+          movies: [1]
+        }, {
+          id: 2,
+          name: "Amy Adams",
+          age: 46,
+          gender: "Female",
+          portait_url: "https://m.media-amazon.com/images/M/MV5BMTg2NTk2MTgxMV5BMl5BanBnXkFtZTgwNjcxMjAzMTI@._V1_.jpg",
+          movies: [2]
+        }
+      ]
+    })
+    // Comment out while developing
+    // fetch(HEROKU_DOMAIN + "/actors")
+    //     .then(response => response.json())
+    //     .then((result) => {
+    //       console.log(result.actors);
+    //       this.setState({ actors: result.actors });
+    //     });
   }
   render() {
     if (this.state.actors === undefined) {
@@ -33,25 +53,18 @@ class ActorColumn extends React.Component {
         <h3 className="Availablility-column-header">Available</h3>
         {
           this.state.actors.map((actor, index) => {
+            var image_src = no_portait_placeholder
             if (actor.portait_url !== undefined) {
-              return (
-                <div className="Actor-row" key={index}>
-                  <img src={actor.portait_url} alt={actor.name + " Portait"} width="50"></img>
-                  <div className="Actor-row-name">
-                    <div>{actor.name}</div>
-                  </div>
-                </div>
-              )
-            } else {
-              return (
-                <div className="Actor-row" key={index}>
-                  <img src={no_portait_placeholder} alt={actor.name + " Portait"} width="50"></img>
-                  <div className="Actor-row-name">
-                    <div>{actor.name}</div>
-                  </div>
-                </div>
-              )
+              image_src = actor.portait_url;
             }
+            return (
+              <div className="Actor-row" key={index}>
+                <img src={image_src} alt={actor.name + " Portait"} width="50"></img>
+                <div className="Actor-row-name">
+                  <div>{actor.name}</div>
+                </div>
+              </div>
+            )
           })
         }
         <h3 className="Availablility-column-header">Unavabilable</h3>
