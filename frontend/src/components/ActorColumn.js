@@ -5,6 +5,7 @@ class ActorColumn extends React.Component {
     return (
       <div className="Actor-column">
         <h2 className="Actor-column-header">Actors</h2>
+        <h3 className="Availablility-column-header">Available</h3>
         {
           this.props.actors.map((actor, index) =>
             <div className="Actor-row">
@@ -15,6 +16,7 @@ class ActorColumn extends React.Component {
             </div>
           )
         }
+        <h3 className="Availablility-column-header">Unavabilable</h3>
       </div>
     );
   }
