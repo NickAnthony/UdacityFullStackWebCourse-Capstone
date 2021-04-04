@@ -1,4 +1,5 @@
 import React from 'react';
+import ActorRow from './ActorRow';
 
 const HEROKU_DOMAIN = "https://nickanthony-casting-agency.herokuapp.com"
 const no_portait_placeholder = "https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png"
@@ -57,14 +58,7 @@ class ActorColumn extends React.Component {
             if (actor.portait_url !== undefined) {
               image_src = actor.portait_url;
             }
-            return (
-              <div className="Actor-row" key={index}>
-                <img src={image_src} alt={actor.name + " Portait"} width="50"></img>
-                <div className="Actor-row-name">
-                  <div>{actor.name}</div>
-                </div>
-              </div>
-            )
+            return <ActorRow image_src={image_src} index={index} name={actor.name}/>;
           })
         }
         <h3 className="Availablility-column-header">Unavabilable</h3>

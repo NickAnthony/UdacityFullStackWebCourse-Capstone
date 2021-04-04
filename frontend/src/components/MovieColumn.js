@@ -1,4 +1,5 @@
 import React from 'react';
+import MovieThumbnail from './MovieThumbnail';
 
 const HEROKU_DOMAIN = "https://nickanthony-casting-agency.herokuapp.com"
 const no_movie_placeholder = "https://image.flaticon.com/icons/png/512/2790/2790961.png"
@@ -55,14 +56,7 @@ class MovieColumn extends React.Component {
               if (movie.movie_photo !== undefined) {
                 image_src = movie.movie_photo;
               }
-              return (
-                <div className="Movie-thumbnail" key={index}>
-                  <img src={image_src} alt={movie.title + " Image"} height="250"></img>
-                  <div className="Movie-date">
-                    <div>{movie.title}</div>
-                  </div>
-                </div>
-              )
+              return <MovieThumbnail index={index} image_src={image_src} title={movie.title}/>;
           })}
         </div>
         <h3 className="Upcoming-column-header">Released</h3>
