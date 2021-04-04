@@ -3,8 +3,8 @@ import React from 'react';
 class ActorColumn extends React.Component {
   render() {
     return (
-      <div>
-        <h2>Actors</h2>
+      <div className="Actor-column">
+        <h2 className="Actor-column-header">Actors</h2>
         <ul>
           { this.props.actors.map((actor, index) => {
               return <li key={index}>{actor.name}</li>
