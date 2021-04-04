@@ -1,4 +1,6 @@
 import './App.css';
+import ActorColumn from './components/ActorColumn';
+import MovieColumn from './components/MovieColumn';
 
 var basic_data = {
   actors: [
@@ -8,8 +10,7 @@ var basic_data = {
       age: 59,
       gender: "Male",
       movies: [1]
-    },
-    {
+    }, {
       id: 2,
       name: "Amy Adams",
       age: 46,
@@ -23,9 +24,8 @@ var basic_data = {
       title: "Ocean's Eleven",
       release_date: "2001-12-07",
       actors: [1]
-    },
-    {
-      id: 1,
+    }, {
+      id: 2,
       title: "The Master",
       release_date: "2012-09-21",
       actors: [2]
@@ -36,22 +36,8 @@ var basic_data = {
 function App() {
   return (
     <div className="App">
-      <h2>Actors</h2>
-      <ul>
-        {
-          basic_data.actors.map((actor, index) => {
-            return <li key={index}>{actor.name}</li>
-          })
-        }
-      </ul>
-      <h2>Movies</h2>
-      <ul>
-        {
-          basic_data.movies.map((movie, index) => {
-            return <li key={index}>{movie.title}</li>
-          })
-        }
-      </ul>
+      <ActorColumn actors={basic_data.actors}/>
+      <MovieColumn movies={basic_data.movies}/>
     </div>
   );
 }
