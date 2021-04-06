@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class AppHeader extends React.Component {
   constructor(props) {
@@ -9,15 +10,16 @@ class AppHeader extends React.Component {
   loginWithAuth0(e) {
     e.preventDefault();
     console.log('The link was clicked.');
+
   }
   render() {
     return (
       <div className="App-header">
         <h2>CASTING AGENCY</h2>
         <div className="Menu">
-          <button onClick={this.loginWithAuth0} className="Menu-button">
-            Login
-          </button>
+          <Link to="/" className="Menu-button">Home</Link>
+          <Link to="/new-actor" className="Menu-button">Add Actor</Link>
+          <Link to="/login" className="Menu-button">Login</Link>
         </div>
       </div>
     );
