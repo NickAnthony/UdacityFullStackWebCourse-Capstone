@@ -1,16 +1,13 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 
 class AppHeader extends React.Component {
   constructor(props) {
     super(props);
     // This binding is necessary to make `this` work in the callback
-    this.loginWithAuth0 = this.loginWithAuth0.bind(this);
-  }
-  loginWithAuth0(e) {
-    e.preventDefault();
-    console.log('The link was clicked.');
-
+    console.log("window.location.origin: " + window.location.origin)
   }
   render() {
     return (
@@ -19,7 +16,9 @@ class AppHeader extends React.Component {
         <div className="Menu">
           <Link to="/" className="Menu-button">Home</Link>
           <Link to="/new-actor" className="Menu-button">Add Actor</Link>
-          <Link to="/login" className="Menu-button">Login</Link>
+          <Link to="/profile" className="Menu-button">My Profile</Link>
+          <LoginButton />
+          <LogoutButton />
         </div>
       </div>
     );

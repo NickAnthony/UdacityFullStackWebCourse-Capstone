@@ -2,13 +2,13 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import ActorColumn from './components/ActorColumn';
 import MovieColumn from './components/MovieColumn';
 import AppHeader from './components/AppHeader';
 import NewActor from './components/NewActor';
+import Profile from './components/Profile';
 
 function App() {
   return (
@@ -22,8 +22,8 @@ function App() {
           <Route path="/new-actor">
             <NewActorRoute />
           </Route>
-          <Route path="/login">
-            <Login />
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route path="/">
             <Home />
@@ -45,10 +45,6 @@ function Home() {
 
 function NewActorRoute() {
   return <NewActor />;
-}
-
-function Login() {
-  return <h2>Login Page</h2>;
 }
 
 export default App;

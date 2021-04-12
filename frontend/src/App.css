@@ -2,9 +2,11 @@
   /* margin: 10px; */
   display: flex;
   flex-direction: column;
+  background-color: #263238;
+  height: 100vh;
 }
 
-h2, h3 {
+h2, h3, h4, p {
   margin: 0px;
   padding: 10px;
 }
@@ -65,17 +67,17 @@ input {
   gap: 0px;
 }
 .Availablility-column-header {
-  color: black;
+  color: white;
   font-family: 'Oswald', sans-serif;
   padding: 10px;
-  border-bottom: 3px solid black;
+  border-bottom: 3px solid white;
   margin: 5px;
 }
 .Upcoming-column-header {
-  color: black;
+  color: white;
   font-family: 'Oswald', sans-serif;
   padding: 10px;
-  border-bottom: 3px solid black;
+  border-bottom: 3px solid white;
   margin: 5px;
 }
 
@@ -105,6 +107,7 @@ input {
 .Actor-row:hover {
   color: white;
   background-color: #37474f;
+  border-color: #37474f;
 }
 .Actor-row-name {
   display: flex;
@@ -134,7 +137,7 @@ input {
 .Movie-thumbnail {
   padding: 10px;
   border-radius: 5px;
-  color: black;
+  color: white;
 }
 .Movie-thumbnail:hover {
   color: white;
@@ -147,8 +150,8 @@ input {
   font-size: 20px;
   font-family: 'Oswald', sans-serif;
   padding: 5px;
+  color: white;
 }
-
 
 
 .New-actor-wrapper {
@@ -157,4 +160,28 @@ input {
   align-items: center;
   justify-content: center;
   height: 80vh;
+}
+
+.Profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  color: white;
+}
+.Profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #37474f;
+  padding: 30px;
+  border-radius: 5px;
+}
+.Profile-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: right;
 }
