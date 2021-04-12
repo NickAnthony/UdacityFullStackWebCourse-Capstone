@@ -37,6 +37,7 @@ process.
     movie = Movie(title=req_title, release_date=req_release_date)
     movie.insert()
   ```
+
 #### Update example
   ```Python
       movie = Movie.query.filter(Movie.id == id).one_or_none()
