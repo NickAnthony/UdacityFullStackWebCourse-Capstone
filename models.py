@@ -102,6 +102,7 @@ class Actor(db.Model, GeneralModel):
     name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String, nullable=False)
+    portait_url = db.Column(db.String, nullable=True)
     # Many to many relationship with movies
     movies = db.relationship('Movie', secondary=movie_actor_association,
                              backref=db.backref('actors', lazy=True))
@@ -136,6 +137,7 @@ class Movie(db.Model, GeneralModel):
     title = db.Column(db.String, nullable=False)
     # A datetime.date() object
     release_date = db.Column(db.Date, nullable=False)
+    movie_photo = db.Column(db.String, nullable=True)
     # Has many to many relationship with actors, with backref `actors`
 
     def __init__(self, title, release_date):

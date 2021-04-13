@@ -20,7 +20,7 @@ class ActorColumn extends React.Component {
     //       name: "George Clooney",
     //       age: 59,
     //       gender: "Male",
-    //       portait_url: "https://flxt.tmsimg.com/v9/AllPhotos/23213/23213_v9_bb.jpg",
+    //       portait_url: "https://m.media-amazon.com/images/M/MV5BMjEyMTEyOTQ0MV5BMl5BanBnXkFtZTcwNzU3NTMzNw@@._V1_UY1200_CR126,0,630,1200_AL_.jpg",
     //       movies: [1]
     //     }, {
     //       id: 2,
