@@ -41,23 +41,29 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.new_actor = {
             'name': 'George Clooney',
             'age': 59,
-            'gender': "Male"
+            'gender': "Male",
+            'portait_url': "https://m.media-amazon.com/images/M/MV5BMjEyMTEyOTQ0MV5BMl5BanBnXkFtZTcwNzU3NTMzNw@@._V1_UY1200_CR126,0,630,1200_AL_.jpg",
+
         }
 
         self.new_movie = {
             "title": "Ocean's Eleven",
-            "release_date": "2001-12-07"
+            "release_date": "2001-12-07",
+            "movie_photo": "https://m.media-amazon.com/images/M/MV5BYzVmYzVkMmUtOGRhMi00MTNmLThlMmUtZTljYjlkMjNkMjJkXkEyXkFqcGdeQXVyNDk3NzU2MTQ@._V1_.jpg",
         }
         # Prepopulate the database
         new_actress = Actor(
             name="Amy Adams",
             age=46,
-            gender="Female"
+            gender="Female",
+            portait_url="https://m.media-amazon.com/images/M/MV5BMTg2NTk2MTgxMV5BMl5BanBnXkFtZTgwNjcxMjAzMTI@._V1_.jpg",
         )
         new_movie = Movie(
             title="The Master",
             release_date=datetime.datetime.strptime("2012-09-21",
-                                                    "%Y-%m-%d").date()
+                                                    "%Y-%m-%d").date(),
+            movie_photo="https://m.media-amazon.com/images/M/MV5BMTQ2NjQ5MzMwMF5BMl5BanBnXkFtZTcwMjczNTAzOA@@._V1_UY1200_CR90,0,630,1200_AL_.jpg",
+
         )
         new_actress.insert()
         new_movie.insert()
@@ -98,6 +104,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['actors'][0]['name'])
         self.assertTrue(data['actors'][0]['age'])
         self.assertTrue(data['actors'][0]['gender'])
+        self.assertTrue(data['actors'][0]['portait_url'])
 
     # ------------------------------------------------------------
     # Testing '/actors/%id/movies' GET endpoint
@@ -457,6 +464,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertTrue(data['movies'][0]['title'])
         self.assertTrue(data['movies'][0]['release_date'])
+        self.assertTrue(data['movies'][0]['movie_photo'])
 
     # ------------------------------------------------------------
     # Testing '/movies/%id/actors' GET endpoint

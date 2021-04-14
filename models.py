@@ -107,10 +107,11 @@ class Actor(db.Model, GeneralModel):
     movies = db.relationship('Movie', secondary=movie_actor_association,
                              backref=db.backref('actors', lazy=True))
 
-    def __init__(self, name, age, gender):
+    def __init__(self, name, age, gender, portait_url=None):
         self.name = name
         self.age = age
         self.gender = gender
+        self.portait_url = portait_url
 
     def format(self):
         formatted_movies = [movie.id for movie in self.movies]
@@ -119,6 +120,7 @@ class Actor(db.Model, GeneralModel):
             'name': self.name,
             'age': self.age,
             'gender': self.gender,
+            'portait_url': self.portait_url,
             'movies': formatted_movies
         }
 
@@ -140,9 +142,10 @@ class Movie(db.Model, GeneralModel):
     movie_photo = db.Column(db.String, nullable=True)
     # Has many to many relationship with actors, with backref `actors`
 
-    def __init__(self, title, release_date):
+    def __init__(self, title, release_date, movie_photo=None):
         self.title = title
         self.release_date = release_date
+        self.movie_photo = movie_photo
 
     def format(self):
         formatted_actors = [actor.id for actor in self.actors]
@@ -150,6 +153,7 @@ class Movie(db.Model, GeneralModel):
             'id': self.id,
             'title': self.title,
             'release_date': "{:%Y-%m-%d}".format(self.release_date),
+            'movie_photo': self.movie_photo,
             'actors': formatted_actors
         }
 
