@@ -147,6 +147,7 @@ def create_app(test_config=None):
         name = request.get_json().get('name', None)
         age = request.get_json().get('age', 0)
         gender = request.get_json().get('gender', None)
+        portrait_url = request.get_json().get('portrait_url', None)
         movie_ids = request.get_json().get('movies', [])
 
         # Verify that the appropriate parameters were passed.
@@ -162,12 +163,12 @@ def create_app(test_config=None):
         movies_to_associate = Movie.query.filter(
             Movie.id.in_(movie_ids)
         ).all()
-
         try:
             new_actor = Actor(
                 name=name,
                 age=age,
-                gender=gender
+                gender=gender,
+                portait_url=portrait_url
             )
             new_actor.movies = movies_to_associate
             new_actor.insert()
@@ -330,6 +331,7 @@ def create_app(test_config=None):
             abort(400)
         title = request.get_json().get('title', None)
         release_date_str = request.get_json().get('release_date', None)
+        movie_photo = request.get_json().get('movie_photo', None)
         actor_ids = request.get_json().get('actors', [])
 
         # Verify that the appropriate parameters were passed.
@@ -356,7 +358,8 @@ def create_app(test_config=None):
         try:
             new_movie = Movie(
                 title=title,
-                release_date=release_date
+                release_date=release_date,
+                movie_photo=movie_photo
             )
             new_movie.actors = actors_to_associate
             new_movie.insert()
@@ -476,7 +479,6 @@ def create_app(test_config=None):
 
     @app.errorhandler(AuthError)
     def handle_auth_error(e):
-        print("HELLO AuthError!")
         return jsonify({
             "success": False,
             "error": e.error['code'],
