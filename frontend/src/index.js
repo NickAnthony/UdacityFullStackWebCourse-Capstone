@@ -11,6 +11,8 @@ ReactDOM.render(
       domain="fsnd-app-nickanthony.us.auth0.com"
       clientId="ExP2mxHo4wAMYB0MGc9nmWHxSHcfO1eu"
       redirectUri={window.location.origin + "/profile"}
+      audience="casting-agency"
+      scope="read:current_user update:current_user_metadata"
     >
       <App />
     </Auth0Provider>
