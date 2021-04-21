@@ -7,7 +7,6 @@ function NewActor() {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [portrait_url, setPortraitUrl] = useState("https://m.media-amazon.com/images/M/MV5BOTI3ODk1MTMyNV5BMl5BanBnXkFtZTcwNDEyNTE2Mg@@._V1_UY317_CR6,0,214,317_AL_.jpg");
   const [portrait_img_src, setPortraitImgSrc] = useState(no_portrait_placeholder);
-  const [access_token, setAccessToken] = useState("");
   const [first_name, setFirstName] = useState("Ryan");
   const [last_name, setLastName] = useState("Reynolds");
   const [age, setAge] = useState(44);
@@ -35,8 +34,6 @@ function NewActor() {
         audience: `casting-agency`,
         scope: "read:current_user",
       });
-      console.log("accessToken:", accessToken);
-      setAccessToken(accessToken);
       console.log(JSON.stringify({
         name: first_name + " " + last_name,
         age: age,
@@ -44,20 +41,6 @@ function NewActor() {
         portrait_url: portrait_url,
       }))
       // TO-DO Make this Async
-      // const newActorPostResponse = await fetch(DOMAIN + "/actors", {
-      //   method: 'POST',
-      //   headers: {
-      //     Authorization: `Bearer ${access_token}`,
-      //   },
-      //   body: JSON.stringify({
-      //     name: first_name + " " + last_name,
-      //     age: age,
-      //     gender: gender,
-      //     portrait_url: portrait_url,
-      //   })
-      // });
-      // const { response_data } = await newActorPostResponse.json();
-      // console.log(response_data);
       fetch(DOMAIN + "/actors", {
         method: 'POST',
         headers: {

@@ -8,6 +8,7 @@ import ActorColumn from './components/ActorColumn';
 import MovieColumn from './components/MovieColumn';
 import AppHeader from './components/AppHeader';
 import NewActor from './components/NewActor';
+import DeleteActor from './components/DeleteActor';
 import Profile from './components/Profile';
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
         <Switch>
           <Route path="/new-actor">
             <NewActorRoute />
+          </Route>
+          <Route path="/delete-actor">
+            <DeleteActorRoute />
           </Route>
           <Route path="/profile">
             <Profile />
@@ -45,6 +49,9 @@ function Home() {
 
 function NewActorRoute() {
   return <NewActor />;
+}
+function DeleteActorRoute() {
+  return <DeleteActor />;
 }
 
 export default App;
