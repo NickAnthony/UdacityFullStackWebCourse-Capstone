@@ -32,8 +32,8 @@ class ActorColumn extends React.Component {
         {
           this.state.actors.map((actor, index) => {
             var image_src = no_portrait_placeholder
-            if (actor.portait_url !== undefined) {
-              image_src = actor.portait_url;
+            if (actor.portrait_url !== undefined) {
+              image_src = actor.portrait_url;
             }
             return <ActorRow image_src={image_src} key={index} index={index} name={actor.name}/>;
           })

@@ -168,7 +168,7 @@ def create_app(test_config=None):
                 name=name,
                 age=age,
                 gender=gender,
-                portait_url=portrait_url
+                portrait_url=portrait_url
             )
             new_actor.movies = movies_to_associate
             new_actor.insert()

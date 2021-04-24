@@ -42,7 +42,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             'name': 'George Clooney',
             'age': 59,
             'gender': "Male",
-            'portait_url': "https://m.media-amazon.com/images/M/MV5BMjEyMTEyOTQ0MV5BMl5BanBnXkFtZTcwNzU3NTMzNw@@._V1_UY1200_CR126,0,630,1200_AL_.jpg",
+            'portrait_url': "https://m.media-amazon.com/images/M/MV5BMjEyMTEyOTQ0MV5BMl5BanBnXkFtZTcwNzU3NTMzNw@@._V1_UY1200_CR126,0,630,1200_AL_.jpg",
 
         }
 
@@ -56,7 +56,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             name="Amy Adams",
             age=46,
             gender="Female",
-            portait_url="https://m.media-amazon.com/images/M/MV5BMTg2NTk2MTgxMV5BMl5BanBnXkFtZTgwNjcxMjAzMTI@._V1_.jpg",
+            portrait_url="https://m.media-amazon.com/images/M/MV5BMTg2NTk2MTgxMV5BMl5BanBnXkFtZTgwNjcxMjAzMTI@._V1_.jpg",
         )
         new_movie = Movie(
             title="The Master",
@@ -104,7 +104,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['actors'][0]['name'])
         self.assertTrue(data['actors'][0]['age'])
         self.assertTrue(data['actors'][0]['gender'])
-        self.assertTrue(data['actors'][0]['portait_url'])
+        self.assertTrue(data['actors'][0]['portrait_url'])
 
     # ------------------------------------------------------------
     # Testing '/actors/%id/movies' GET endpoint

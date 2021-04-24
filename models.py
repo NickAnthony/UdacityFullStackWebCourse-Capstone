@@ -102,16 +102,16 @@ class Actor(db.Model, GeneralModel):
     name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String, nullable=False)
-    portait_url = db.Column(db.String, nullable=True)
+    portrait_url = db.Column(db.String, nullable=True)
     # Many to many relationship with movies
     movies = db.relationship('Movie', secondary=movie_actor_association,
                              backref=db.backref('actors', lazy=True))
 
-    def __init__(self, name, age, gender, portait_url=None):
+    def __init__(self, name, age, gender, portrait_url=None):
         self.name = name
         self.age = age
         self.gender = gender
-        self.portait_url = portait_url
+        self.portrait_url = portrait_url
 
     def format(self):
         formatted_movies = [movie.id for movie in self.movies]
@@ -120,7 +120,7 @@ class Actor(db.Model, GeneralModel):
             'name': self.name,
             'age': self.age,
             'gender': self.gender,
-            'portait_url': self.portait_url,
+            'portrait_url': self.portrait_url,
             'movies': formatted_movies
         }
 

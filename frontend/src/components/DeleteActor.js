@@ -84,8 +84,8 @@ function DeleteActor() {
         {
           actors.map((actor, index) => {
             var image_src = no_portrait_placeholder;
-            if (actor.portait_url !== undefined) {
-              image_src = actor.portait_url;
+            if (actor.portrait_url !== undefined) {
+              image_src = actor.portrait_url;
             }
             return (
               <div className="Delete-actor-row" key={index}>
