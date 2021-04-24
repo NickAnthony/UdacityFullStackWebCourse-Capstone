@@ -16,7 +16,7 @@ const Profile = () => {
   }
   if (!isAuthenticated) {
     return (
-      <div className="Profile">
+      <div className="User-profile">
         <img src={no_portait_placeholder} alt={"Portait"} width="100"/>
         <h2>Please log in.</h2>
       </div>
@@ -24,10 +24,10 @@ const Profile = () => {
   }
 
   return (
-    <div className="Profile">
-      <div className="Profile-wrapper">
+    <div className="User-profile">
+      <div className="User-profile-wrapper">
         <img src={user.picture} alt={user.name} height="150"/>
-        <div className="Profile-content">
+        <div className="User-profile-content">
           <h2>Name:</h2>
           <h4>{user.name}</h4>
           <h2>Email:</h2>

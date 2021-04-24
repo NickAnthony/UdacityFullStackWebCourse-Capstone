@@ -13,6 +13,7 @@ import NewActor from './components/NewActor';
 import DeleteActor from './components/DeleteActor';
 import Profile from './components/Profile';
 import ActorProfile from './components/ActorProfile';
+import MovieProfile from './components/MovieProfile';
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route path="/actors/:id">
             <ActorProfile />
+          </Route>
+          <Route path="/movies/:id">
+            <MovieProfile />
           </Route>
           <Route path="/">
             <Home />

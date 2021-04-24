@@ -5,30 +5,30 @@ import { useParams } from "react-router-dom";
 import AppLoader from "./AppLoader";
 import Thumbnail from "./Thumbnail"
 
-function ActorProfile() {
+function MovieProfile() {
   let { id } = useParams();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [actor, setActor] = useState(null);
-  const [movies, setMovies] = useState([]);
-  const [fetch_actor, setFetchActor] = useState(false);
+  const [movie, setMovie] = useState(null);
+  const [actors, setActors] = useState([]);
+  const [fetch_movie, setFetchMovie] = useState(false);
 
   useEffect(() => {
-    if (!fetch_actor) {
-      fetch(`${DOMAIN}/actors/${id}/movies`)
+    if (!fetch_movie) {
+      fetch(`${DOMAIN}/movies/${id}/actors`)
           .then(response => response.json())
           .then((result) => {
             console.log(result);
-            if (result.actor.portrait_url === undefined) {
-              result.actor.portrait_url = no_portrait_placeholder;
+            if (result.movie.movie_photo === undefined) {
+              result.movie.movie_photo = no_movie_placeholder;
             }
-            setActor(result.actor);
-            setMovies(result.movies);
+            setMovie(result.movie);
+            setActors(result.actors);
           });
-      setFetchActor(true);
+      setFetchMovie(true);
     }
-  }, [fetch_actor, id])
+  }, [fetch_movie, id])
 
-  const associateActor = async (actor_id) => {
+  const associateMovie = async (movid_id) => {
     try {
       // TO-DO Make this occur on page load, not on submit
       const accessToken = await getAccessTokenSilently({
@@ -36,7 +36,7 @@ function ActorProfile() {
         scope: "read:current_user",
       });
       // TO-DO Make this Async
-      fetch(`${DOMAIN}/actors/${actor_id}`, {
+      fetch(`${DOMAIN}/movies/${movid_id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -56,7 +56,7 @@ function ActorProfile() {
     }
   };
 
-  if (!actor) {
+  if (!movie) {
     return <AppLoader />
   }
 
@@ -65,24 +65,24 @@ function ActorProfile() {
       <div className="Profile-body">
 
         <div className="Profile">
-          <img src={actor.portrait_url} alt={actor.name + " Portrait"} className="Profile-photo" />
+          <img src={movie.movie_photo} alt={movie.title + " Poster Photo"} className="Profile-photo" />
           <div className="Profile-content">
-            <p className="Profile-name">{actor.name}</p>
-            <h2>{actor.gender}, {actor.age}</h2>
+            <p className="Profile-name">{movie.title}</p>
+            <h2>{movie.release_date}</h2>
             {
               (isAuthenticated) &&
                   <div className="Profile-menu">
-                    <h3>Edit actor menu:</h3>
-                    <button className="Profile-menu-button"  onClick={() => associateActor(id)}>Add actor to movie</button>
-                    <button className="Profile-menu-button"  onClick={() => {}}>Update actor/actress information</button>
-                    <button className="Profile-menu-button-delete"  onClick={() => {}}>Delete actor</button>
+                    <h3>Edit movie menu:</h3>
+                    <button className="Profile-menu-button"  onClick={() => associateMovie(id)}>Add actor to movie</button>
+                    <button className="Profile-menu-button"  onClick={() => {}}>Update movie information</button>
+                    <button className="Profile-menu-button-delete"  onClick={() => {}}>Delete movie</button>
                   </div>
 
             }
             {
               (!isAuthenticated) &&
                   <div className="Profile-menu">
-                    <h3>Edit actor menu:</h3>
+                    <h3>Edit movie menu:</h3>
                     <h4>
                         Only Casting Directors or Executive Producers can make
                         changes. <br/> Please log in to edit.
@@ -93,18 +93,17 @@ function ActorProfile() {
         </div>
 
         <div className="Movie-column-wrapper">
-          <h3 className="Upcoming-column-header">Upcoming</h3>
+          <h3 className="Upcoming-column-header">Actors/Actresses</h3>
           <div className="Movie-column">
             {
-              movies.map((movie, index) => {
-                var image_src = no_movie_placeholder
-                if (movie.movie_photo !== undefined) {
-                  image_src = movie.movie_photo;
+              actors.map((actor, index) => {
+                var image_src = no_portrait_placeholder
+                if (actor.portrait_url !== undefined) {
+                  image_src = actor.portrait_url;
                 }
-                return <Thumbnail id={movie.id} index={index} key={index} image_src={image_src} title={movie.title}/>;
+                return <Thumbnail id={actor.id} type="actors" index={index} key={index} image_src={image_src} title={actor.name}/>;
             })}
           </div>
-          <h3 className="Upcoming-column-header">Released</h3>
         </div>
 
       </div>
@@ -112,4 +111,4 @@ function ActorProfile() {
   );
 };
 
-export default ActorProfile;
+export default MovieProfile;
