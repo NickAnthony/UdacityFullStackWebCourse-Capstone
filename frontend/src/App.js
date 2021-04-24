@@ -1,4 +1,6 @@
 import './App.css';
+/* Import CSS for react-loader-spinner */
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,6 +12,7 @@ import AppHeader from './components/AppHeader';
 import NewActor from './components/NewActor';
 import DeleteActor from './components/DeleteActor';
 import Profile from './components/Profile';
+import ActorProfile from './components/ActorProfile';
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
           <Route path="/profile">
             <Profile />
           </Route>
+          <Route path="/actors/:id">
+            <ActorProfile />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
@@ -40,9 +46,11 @@ function App() {
 
 function Home() {
   return (
-    <div className="Column-wrapper">
-      <ActorColumn/>
-      <MovieColumn/>
+    <div className=".Body-wrapper">
+      <div className="Column-wrapper">
+        <ActorColumn/>
+        <MovieColumn/>
+      </div>
     </div>
   );
 }

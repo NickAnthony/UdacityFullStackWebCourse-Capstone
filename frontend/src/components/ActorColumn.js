@@ -35,7 +35,12 @@ class ActorColumn extends React.Component {
             if (actor.portrait_url !== undefined) {
               image_src = actor.portrait_url;
             }
-            return <ActorRow image_src={image_src} key={index} index={index} name={actor.name}/>;
+            return <ActorRow
+                      actor_id={actor.id}
+                      image_src={image_src}
+                      key={index}
+                      index={index}
+                      name={actor.name}/>;
           })
         }
         <h3 className="Availablility-column-header">Unavabilable</h3>
