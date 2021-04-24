@@ -286,3 +286,10 @@ input {
   padding: 20px;
   border-radius: 5px;
 }
+
+.Loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
