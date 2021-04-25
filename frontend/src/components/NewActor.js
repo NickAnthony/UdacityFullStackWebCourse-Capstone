@@ -13,7 +13,7 @@ function NewActor() {
   const [last_name, setLastName] = useState("Reynolds");
   const [age, setAge] = useState(44);
   const [gender, setGender] = useState("Male");
-  const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState("");
 
   const handleChange = (event) => {
     setPortraitUrl(event.target.value);
@@ -60,7 +60,7 @@ function NewActor() {
       .then((result) => {
         console.log(result);
         if (result.success) {
-          setRedirect(true)
+          setRedirect(`/actors/${result.id}`)
         }
       });
 
@@ -70,7 +70,7 @@ function NewActor() {
   };
 
   if (redirect) {
-    return <Redirect to={"/"} />;
+    return <Redirect to={redirect} />;
   }
   if (!isAuthenticated) {
     return(
