@@ -5,6 +5,8 @@ import { DOMAIN, no_portrait_placeholder } from '../Constants.js'
 
 function NewActor() {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+  // Set up state
   const [portrait_url, setPortraitUrl] = useState("https://m.media-amazon.com/images/M/MV5BOTI3ODk1MTMyNV5BMl5BanBnXkFtZTcwNDEyNTE2Mg@@._V1_UY317_CR6,0,214,317_AL_.jpg");
   const [portrait_img_src, setPortraitImgSrc] = useState(no_portrait_placeholder);
   const [first_name, setFirstName] = useState("Ryan");
@@ -24,10 +26,10 @@ function NewActor() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    postNewUser();
+    postNewActor();
   }
 
-  const postNewUser = async () => {
+  const postNewActor = async () => {
     try {
       // TO-DO Make this occur on page load, not on submit
       const accessToken = await getAccessTokenSilently({
@@ -72,15 +74,15 @@ function NewActor() {
   }
   if (!isAuthenticated) {
     return(
-      <div className="New-actor-wrapper">
+      <div className="New-item-wrapper">
         <h1>Please log in to add actors</h1>
       </div>
     )
   }
 
   return (
-      <div className="New-actor-wrapper">
-        <form className="New-actor-form-wrapper" onSubmit={handleSubmit}>
+      <div className="New-item-wrapper">
+        <form className="New-item-form-wrapper" onSubmit={handleSubmit}>
           <h1>New Actor</h1>
           <p className="Form-label">First name</p>
           <input
@@ -119,7 +121,7 @@ function NewActor() {
           &nbsp;
           <img
             src={portrait_img_src}
-            alt={"Portait"}
+            alt={`${first_name} ${last_name} Portait`}
             width="100"/>
           {
             !(portrait_url) &&

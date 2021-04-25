@@ -14,6 +14,7 @@ import DeleteActor from './components/DeleteActor';
 import Profile from './components/Profile';
 import ActorProfile from './components/ActorProfile';
 import MovieProfile from './components/MovieProfile';
+import NewMovie from './components/NewMovie';
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function App() {
           </Route>
           <Route path="/delete-actor">
             <DeleteActorRoute />
+          </Route>
+          <Route path="/new-movie">
+            <NewMovieRoute />
           </Route>
           <Route path="/profile">
             <Profile />
@@ -64,6 +68,9 @@ function NewActorRoute() {
 }
 function DeleteActorRoute() {
   return <DeleteActor />;
+}
+function NewMovieRoute() {
+  return <NewMovie />;
 }
 
 export default App;

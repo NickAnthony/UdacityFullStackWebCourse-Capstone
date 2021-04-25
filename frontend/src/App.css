@@ -172,7 +172,7 @@ button {
 }
 
 
-.New-actor-wrapper {
+.New-item-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -182,7 +182,7 @@ button {
   font-family: 'Oswald', sans-serif;
   color: white;
 }
-.New-actor-form-wrapper {
+.New-item-form-wrapper {
   display: flex;
   flex-direction: column;
   align-items: left;

@@ -7,12 +7,15 @@ import Thumbnail from "./Thumbnail";
 import Moment from 'moment';
 
 function MovieProfile() {
+  // Get id from the url
   let { id } = useParams();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  Moment.locale('en');
+
+  // Set up state
   const [movie, setMovie] = useState(null);
   const [actors, setActors] = useState([]);
   const [fetch_movie, setFetchMovie] = useState(false);
-  const moment = Moment.locale('en');
 
   useEffect(() => {
     if (!fetch_movie) {
