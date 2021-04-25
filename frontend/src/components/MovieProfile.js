@@ -3,7 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { DOMAIN, no_portrait_placeholder, no_movie_placeholder } from '../Constants.js';
 import { useParams } from "react-router-dom";
 import AppLoader from "./AppLoader";
-import Thumbnail from "./Thumbnail"
+import Thumbnail from "./Thumbnail";
+import Moment from 'moment';
 
 function MovieProfile() {
   let { id } = useParams();
@@ -11,6 +12,7 @@ function MovieProfile() {
   const [movie, setMovie] = useState(null);
   const [actors, setActors] = useState([]);
   const [fetch_movie, setFetchMovie] = useState(false);
+  const moment = Moment.locale('en');
 
   useEffect(() => {
     if (!fetch_movie) {
@@ -60,6 +62,8 @@ function MovieProfile() {
     return <AppLoader />
   }
 
+
+
   return (
     <div className="Profile-wrapper">
       <div className="Profile-body">
@@ -68,7 +72,10 @@ function MovieProfile() {
           <img src={movie.movie_photo} alt={movie.title + " Poster Photo"} className="Profile-photo" />
           <div className="Profile-content">
             <p className="Profile-name">{movie.title}</p>
-            <h2>{movie.release_date}</h2>
+            <div>
+              <h3>Release date:</h3>
+              <h2>{Moment(movie.release_date).format("MMMM Do, YYYY")}</h2>
+            </div>
             {
               (isAuthenticated) &&
                   <div className="Profile-menu">
@@ -77,7 +84,6 @@ function MovieProfile() {
                     <button className="Profile-menu-button"  onClick={() => {}}>Update movie information</button>
                     <button className="Profile-menu-button-delete"  onClick={() => {}}>Delete movie</button>
                   </div>
-
             }
             {
               (!isAuthenticated) &&

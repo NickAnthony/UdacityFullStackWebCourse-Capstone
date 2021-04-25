@@ -101,7 +101,7 @@ function ActorProfile() {
                 if (movie.movie_photo !== undefined) {
                   image_src = movie.movie_photo;
                 }
-                return <Thumbnail id={movie.id} index={index} key={index} image_src={image_src} title={movie.title}/>;
+                return <Thumbnail id={movie.id} type="movies" index={index} key={index} image_src={image_src} title={movie.title}/>;
             })}
           </div>
           <h3 className="Upcoming-column-header">Released</h3>

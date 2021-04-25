@@ -288,6 +288,9 @@ button {
   margin-left: 10px;
   height: 400px;
   padding: 20px;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
 }
 .Profile-photo {
   height: 400px;
