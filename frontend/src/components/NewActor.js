@@ -7,12 +7,12 @@ function NewActor() {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   // Set up state
-  const [portrait_url, setPortraitUrl] = useState("https://m.media-amazon.com/images/M/MV5BOTI3ODk1MTMyNV5BMl5BanBnXkFtZTcwNDEyNTE2Mg@@._V1_UY317_CR6,0,214,317_AL_.jpg");
+  const [portrait_url, setPortraitUrl] = useState("");
   const [portrait_img_src, setPortraitImgSrc] = useState(no_portrait_placeholder);
-  const [first_name, setFirstName] = useState("Ryan");
-  const [last_name, setLastName] = useState("Reynolds");
-  const [age, setAge] = useState(44);
-  const [gender, setGender] = useState("Male");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState("");
   const [redirect, setRedirect] = useState("");
 
   const handleChange = (event) => {
@@ -36,12 +36,6 @@ function NewActor() {
         audience: `casting-agency`,
         scope: "read:current_user",
       });
-      console.log(JSON.stringify({
-        name: first_name + " " + last_name,
-        age: age,
-        gender: gender,
-        portrait_url: portrait_url,
-      }))
       // TO-DO Make this Async
       fetch(DOMAIN + "/actors", {
         method: 'POST',
@@ -58,7 +52,6 @@ function NewActor() {
       })
       .then(response => response.json())
       .then((result) => {
-        console.log(result);
         if (result.success) {
           setRedirect(`/actors/${result.id}`)
         }
