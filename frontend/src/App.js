@@ -13,6 +13,7 @@ import NewActor from './components/NewActor';
 import DeleteActor from './components/DeleteActor';
 import Profile from './components/Profile';
 import ActorProfile from './components/ActorProfile';
+import AssociateActorWithMovie from './components/AssociateActorWithMovie';
 import MovieProfile from './components/MovieProfile';
 import NewMovie from './components/NewMovie';
 
