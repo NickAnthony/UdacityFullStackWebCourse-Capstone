@@ -185,7 +185,6 @@ function MovieProfile() {
             {
               (!isAuthenticated) &&
                   <div className="Profile-menu">
-                    <h3>Edit movie menu:</h3>
                     <h4>
                         Only Casting Directors or Executive Producers can make
                         changes. <br/> Please log in to edit.
