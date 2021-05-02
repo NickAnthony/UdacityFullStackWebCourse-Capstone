@@ -192,7 +192,9 @@ function ActorProfile() {
           <h3 className="Upcoming-column-header">Upcoming</h3>
           <div className="Movie-column">
             {
-              movies.map((movie, index) => {
+              movies.filter((movie) => {
+                return (new Date() <= new Date(movie.release_date));
+              }).map((movie, index) => {
                 var image_src = no_movie_placeholder
                 if (movie.movie_photo !== undefined) {
                   image_src = movie.movie_photo;
@@ -201,6 +203,18 @@ function ActorProfile() {
             })}
           </div>
           <h3 className="Upcoming-column-header">Released</h3>
+          <div className="Movie-column">
+            {
+              movies.filter((movie) => {
+                return (new Date() > new Date(movie.release_date));
+              }).map((movie, index) => {
+                var image_src = no_movie_placeholder
+                if (movie.movie_photo !== undefined) {
+                  image_src = movie.movie_photo;
+                }
+                return <Thumbnail id={movie.id} type="movies" index={index} key={index} image_src={image_src} title={movie.title}/>;
+            })}
+          </div>
         </div>
 
       </div>
