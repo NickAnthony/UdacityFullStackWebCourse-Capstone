@@ -305,6 +305,9 @@ a {
   font-weight: 300;
   font-size: 20px;
 }
+.Profile-content-wide {
+  width: 500px !important;
+}
 .Profile-photo {
   height: 400px;
   border-radius: 5px;

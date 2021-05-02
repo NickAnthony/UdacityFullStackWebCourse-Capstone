@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth0 } from "@auth0/auth0-react";
-import { DOMAIN, no_portrait_placeholder, no_movie_placeholder } from '../Constants.js';
-import { useParams } from "react-router-dom";
+import { DOMAIN, no_movie_placeholder } from '../Constants.js';
 import AppLoader from "./AppLoader";
 import NonLinkThumbnail from "./NonLinkThumbnail";
-import { Redirect } from 'react-router-dom';
 
 
 function AssociateActorWithMovie(props) {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [actor, setActor] = useState(null);
   const [movies, setMovies] = useState([]);
   const [fetch_movies, setFetchMovies] = useState(true);
-  const [redirect, setRedirect] = useState(false);
   const [selected_movies, setSelectedMovies] = useState([]);
-  const [original_selected_movies, setOriginalSelectedMovies] = useState([]);
 
 
   useEffect(() => {
@@ -32,12 +25,11 @@ function AssociateActorWithMovie(props) {
                 }
               })
               setSelectedMovies(selected_movies_array);
-              setOriginalSelectedMovies(selected_movies_array);
           });
       // Save original selected movies in case the fetch fails.
       setFetchMovies(false);
     }
-  }, [fetch_movies, movies, selected_movies])
+  }, [fetch_movies, movies, selected_movies, props.actor_id])
 
   /* Returns true if the given movie is in the set of selected movies.
    */
@@ -74,10 +66,6 @@ function AssociateActorWithMovie(props) {
     return <AppLoader />
   }
 
-  if (redirect) {
-    return <Redirect to={`/actors/${props.actor_id}`} />;
-  }
-
   return (
     <div className="Profile-wrapper">
       <div className="Profile-body">
@@ -98,9 +86,9 @@ function AssociateActorWithMovie(props) {
                   image_src = movie.movie_photo;
                 }
                 return (
-                  <a onClick={() => {toggleAssociateActor(movie)}}>
+                  <div onClick={() => {toggleAssociateActor(movie)}}>
                     <NonLinkThumbnail id={movie.id} index={index} key={index} image_src={image_src} title={movie.title} selected={isSelectedMovie(movie)}/>
-                  </a>
+                  </div>
                 );
             })}
           </div>

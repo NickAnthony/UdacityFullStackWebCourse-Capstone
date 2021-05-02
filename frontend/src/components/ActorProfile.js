@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import AppLoader from "./AppLoader";
 import Thumbnail from "./Thumbnail";
 import AssociateActorWithMovie from "./AssociateActorWithMovie";
+import EditActor from "./EditActor";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
@@ -15,6 +16,7 @@ function ActorProfile() {
   const [movies, setMovies] = useState([]);
   const [fetch_actor, setFetchActor] = useState(true);
   const [show_associate_movie_dialog, setAssociateMovieDiaglog] = useState(false);
+  const [show_edit_actor_dialog, setShowEditActorDialog] = useState(false);
 
   useEffect(() => {
     if (fetch_actor) {
@@ -43,7 +45,7 @@ function ActorProfile() {
         audience: `casting-agency`,
         scope: "read:current_user",
       });
-      // Oppotunistically use the setMovies to set the movies.
+      // Opportunistically use the setMovies to set the movies.
       setMovies(selected_movies);
       // TO-DO Make this Async
       fetch(`${DOMAIN}/actors/${actor_id}`, {
@@ -68,11 +70,64 @@ function ActorProfile() {
       console.log(e.message);
       movieUpdateFailed(e.message, original_movies);
     }
-  };
+  }
+
+  const commitActorEdit = async (new_name, new_age, new_gender, new_portrait_url) => {
+    // Save the current state in case the update fails.
+    const original_actor = actor;
+
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience: `casting-agency`,
+        scope: "read:current_user",
+      });
+      // Opportunistically set the new info.
+      setActor({
+        name: new_name,
+        age: new_age,
+        gender: new_gender,
+        portrait_url: new_portrait_url,
+        movies: actor.movies,
+      });
+      // TO-DO Make this Async
+      fetch(`${DOMAIN}/actors/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: new_name,
+          age: new_age,
+          gender: new_gender,
+          portrait_url: new_portrait_url,
+        })
+      })
+      .then(response => response.json())
+      .then((result) => {
+        if (result.success) {
+          console.log(result);
+        } else {
+          editActorFailed(result.message, original_actor);
+        }
+      });
+    } catch (e) {
+      console.log(e.message);
+      editActorFailed(e.message, original_actor);
+    }
+  }
+
+  const editActorFailed = (error_message, original_actor) => {
+    setActor(original_actor);
+    editFailed(error_message);
+  }
 
   const movieUpdateFailed = (error_message, original_movies) => {
-    console.log("movieUpdateFailed");
     setMovies(original_movies);
+    editFailed(error_message);
+  }
+
+  const editFailed = (error_message) => {
     confirmAlert({
         title: 'Failed to save changes!',
         message: error_message,
@@ -87,6 +142,13 @@ function ActorProfile() {
 
   if (!actor) {
     return <AppLoader />
+  }
+
+  if (show_edit_actor_dialog) {
+    return <EditActor
+              actor={actor}
+              showDialog={setShowEditActorDialog}
+              commitActorEdit={commitActorEdit}/>
   }
 
   if (show_associate_movie_dialog) {
@@ -110,7 +172,7 @@ function ActorProfile() {
               (isAuthenticated) &&
                   <div className="Profile-menu">
                     <button className="Button Profile-menu-button"  onClick={() => setAssociateMovieDiaglog(true)}>Update movies</button>
-                    <button className="Button Profile-menu-button"  onClick={() => {}}>Update actor/actress information</button>
+                    <button className="Button Profile-menu-button"  onClick={() => setShowEditActorDialog(true)}>Update actor/actress information</button>
                     <button className="Button Profile-menu-button-delete"  onClick={() => {}}>Delete actor</button>
                   </div>
             }

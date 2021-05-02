@@ -9,8 +9,7 @@ function NewActor() {
   // Set up state
   const [portrait_url, setPortraitUrl] = useState("");
   const [portrait_img_src, setPortraitImgSrc] = useState(no_portrait_placeholder);
-  const [first_name, setFirstName] = useState("");
-  const [last_name, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [gender, setGender] = useState("");
   const [redirect, setRedirect] = useState("");
@@ -44,7 +43,7 @@ function NewActor() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: first_name + " " + last_name,
+          name: name,
           age: age,
           gender: gender,
           portrait_url: portrait_url,
@@ -77,19 +76,13 @@ function NewActor() {
       <div className="New-item-wrapper">
         <form className="New-item-form-wrapper" onSubmit={handleSubmit}>
           <h1>New Actor</h1>
-          <p className="Form-label">First name</p>
+          <p className="Form-label">Name</p>
           <input
             className="Form-input"
             type="text"
-            value={first_name}
-            onChange={e => setFirstName(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
           />
-          <p className="Form-label">Last name</p>
-          <input
-            className="Form-input"
-            type="text"
-            value={last_name}
-            onChange={e => setLastName(e.target.value)}
           />
           <p className="Form-label">Age</p>
           <input
@@ -114,7 +107,7 @@ function NewActor() {
           &nbsp;
           <img
             src={portrait_img_src}
-            alt={`${first_name} ${last_name} Portait`}
+            alt={`${name} Portait`}
             width="100"/>
           {
             !(portrait_url) &&
