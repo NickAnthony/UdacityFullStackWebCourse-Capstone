@@ -1,6 +1,7 @@
 import React from 'react';
 import Thumbnail from './Thumbnail';
 import { DOMAIN, no_movie_placeholder } from '../Constants.js';
+import AppLoader from './AppLoader';
 
 class MovieColumn extends React.Component {
   constructor(props) {
@@ -17,12 +18,9 @@ class MovieColumn extends React.Component {
         });
   }
   render() {
-    if (this.state.movies === undefined) {
+    if (this.state.movies === undefined || this.state.movies.length == 0) {
       return (
-        <div className="Movie-column-wrapper">
-          <h2 className="Movie-column-header">Movies</h2>
-          <h3 className="Upcoming-column-header">Loading...</h3>
-        </div>
+        <AppLoader />
       );
     }
     return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import ActorRow from './ActorRow';
 import { DOMAIN, no_portrait_placeholder } from '../Constants.js';
+import AppLoader from './AppLoader';
 
 class ActorColumn extends React.Component {
   constructor(props) {
@@ -17,12 +18,9 @@ class ActorColumn extends React.Component {
         });
   }
   render() {
-    if (this.state.actors === undefined) {
+    if (this.state.actors === undefined || this.state.actors.length == 0) {
       return (
-        <div className="Actor-column">
-          <h2 className="Actor-column-header">Actors & Actresses</h2>
-          <h3 className="Availablility-column-header">Loading...</h3>
-        </div>
+        <AppLoader />
       );
     }
     return (
