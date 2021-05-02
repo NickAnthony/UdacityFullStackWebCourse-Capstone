@@ -83,9 +83,9 @@ function MovieProfile() {
               (isAuthenticated) &&
                   <div className="Profile-menu">
                     <h3>Edit movie menu:</h3>
-                    <button className="Profile-menu-button"  onClick={() => associateMovie(id)}>Add actor to movie</button>
-                    <button className="Profile-menu-button"  onClick={() => {}}>Update movie information</button>
-                    <button className="Profile-menu-button-delete"  onClick={() => {}}>Delete movie</button>
+                    <button className="Button Profile-menu-button"  onClick={() => associateMovie(id)}>Cast actor/actress</button>
+                    <button className="Button Profile-menu-button"  onClick={() => {}}>Edit</button>
+                    <button className="Button Profile-menu-button-delete"  onClick={() => {}}>Delete</button>
                   </div>
             }
             {

@@ -172,7 +172,7 @@ function ActorProfile() {
               (isAuthenticated) &&
                   <div className="Profile-menu">
                     <button className="Button Profile-menu-button"  onClick={() => setAssociateMovieDiaglog(true)}>Update movies</button>
-                    <button className="Button Profile-menu-button"  onClick={() => setShowEditActorDialog(true)}>Update actor/actress information</button>
+                    <button className="Button Profile-menu-button"  onClick={() => setShowEditActorDialog(true)}>Edit</button>
                     <button className="Button Profile-menu-button-delete"  onClick={() => {}}>Delete actor</button>
                   </div>
             }
