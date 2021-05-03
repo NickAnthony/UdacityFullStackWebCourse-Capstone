@@ -189,10 +189,11 @@ function ActorProfile() {
         </div>
 
         <div className="Movie-column-wrapper">
-          <h3 className="Upcoming-column-header">Upcoming</h3>
+          <h3 className="Column-header">Upcoming</h3>
           <div className="Movie-column">
             {
               movies.filter((movie) => {
+                // Filter to with release dates today or in the future.
                 return (new Date() <= new Date(movie.release_date));
               }).map((movie, index) => {
                 var image_src = no_movie_placeholder
@@ -202,10 +203,11 @@ function ActorProfile() {
                 return <Thumbnail id={movie.id} type="movies" index={index} key={index} image_src={image_src} title={movie.title}/>;
             })}
           </div>
-          <h3 className="Upcoming-column-header">Released</h3>
+          <h3 className="Column-header">Released</h3>
           <div className="Movie-column">
             {
               movies.filter((movie) => {
+                // Filter to with release dates in the past.
                 return (new Date() > new Date(movie.release_date));
               }).map((movie, index) => {
                 var image_src = no_movie_placeholder

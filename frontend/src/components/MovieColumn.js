@@ -26,7 +26,7 @@ class MovieColumn extends React.Component {
     return (
       <div className="Movie-column-wrapper">
         <h2 className="Movie-column-header">Movies</h2>
-        <h3 className="Upcoming-column-header">Upcoming</h3>
+        <h3 className="Column-header">Upcoming</h3>
         <div className="Movie-column">
           {
             this.state.movies.filter((movie) => {
@@ -40,7 +40,7 @@ class MovieColumn extends React.Component {
               return <Thumbnail id={movie.id} type="movies" index={index} key={index} image_src={image_src} title={movie.title}/>;
           })}
         </div>
-        <h3 className="Upcoming-column-header">Released</h3>
+        <h3 className="Column-header">Released</h3>
         <div className="Movie-column">
           {
             this.state.movies.filter((movie) => {

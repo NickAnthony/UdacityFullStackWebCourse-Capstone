@@ -195,11 +195,11 @@ function MovieProfile() {
         </div>
 
         <div className="Movie-column-wrapper">
-          <h3 className="Upcoming-column-header">Actors/Actresses</h3>
+          <h3 className="Column-header">Actors/Actresses</h3>
           <div className="Movie-column">
             {
               actors.map((actor, index) => {
-                var image_src = no_portrait_placeholder
+                var image_src = no_portrait_placeholder;
                 if (actor.portrait_url !== undefined) {
                   image_src = actor.portrait_url;
                 }

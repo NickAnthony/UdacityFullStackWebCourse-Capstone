@@ -26,7 +26,7 @@ class ActorColumn extends React.Component {
     return (
       <div className="Actor-column">
         <h2 className="Actor-column-header">Actors & Actresses</h2>
-        <h3 className="Availablility-column-header">Available</h3>
+        <h3 className="Column-header">Available</h3>
         {
           this.state.actors.map((actor, index) => {
             var image_src = no_portrait_placeholder
@@ -41,7 +41,7 @@ class ActorColumn extends React.Component {
                       name={actor.name}/>;
           })
         }
-        <h3 className="Availablility-column-header">Unavabilable</h3>
+        <h3 className="Column-header">Unavabilable</h3>
       </div>
     );
   }

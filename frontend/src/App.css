@@ -73,14 +73,7 @@ a {
   gap: 0px;
   height: 100vh;
 }
-.Availablility-column-header {
-  color: white;
-  font-family: 'Oswald', sans-serif;
-  padding: 10px;
-  border-bottom: 3px solid white;
-  margin: 5px;
-}
-.Upcoming-column-header {
+.Column-header {
   color: white;
   font-family: 'Oswald', sans-serif;
   padding: 10px;
