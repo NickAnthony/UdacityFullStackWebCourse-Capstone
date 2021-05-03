@@ -30,9 +30,10 @@ class MovieColumn extends React.Component {
         <div className="Movie-column">
           {
             this.state.movies.filter((movie) => {
+              // Filter to with release dates today or in the future.
               return (new Date() <= new Date(movie.release_date));
             }).map((movie, index) => {
-              var image_src = no_movie_placeholder
+              var image_src = no_movie_placeholder;
               if (movie.movie_photo !== undefined) {
                 image_src = movie.movie_photo;
               }
@@ -43,9 +44,10 @@ class MovieColumn extends React.Component {
         <div className="Movie-column">
           {
             this.state.movies.filter((movie) => {
+              // Filter to with release dates in the past.
               return (new Date() > new Date(movie.release_date));
             }).map((movie, index) => {
-              var image_src = no_movie_placeholder
+              var image_src = no_movie_placeholder;
               if (movie.movie_photo !== undefined) {
                 image_src = movie.movie_photo;
               }
