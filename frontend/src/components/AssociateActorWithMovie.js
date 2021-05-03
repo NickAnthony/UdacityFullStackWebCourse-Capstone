@@ -19,7 +19,7 @@ function AssociateActorWithMovie(props) {
               // If we try to use selected_movies directly, the state will
               // overwrite itself -> Use a local array then do one state update.
               var selected_movies_array = []
-              result.movies.map((movie, index) => {
+              result.movies.forEach((movie, index) => {
                 if (movie.actors.includes(props.actor_id)) {
                   selected_movies_array = [...selected_movies_array, movie]
                 }

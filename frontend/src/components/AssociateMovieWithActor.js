@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DOMAIN, no_movie_placeholder, no_portrait_placeholder } from '../Constants.js';
+import { DOMAIN, no_portrait_placeholder } from '../Constants.js';
 import AppLoader from "./AppLoader";
 import NonLinkThumbnail from "./NonLinkThumbnail";
 
@@ -18,7 +18,7 @@ function AssociateMovieWithActor(props) {
               // If we try to use selected_actors directly, the state will
               // overwrite itself -> Use a local array then do one state update.
               var selected_actors_array = []
-              result.actors.map((actor, index) => {
+              result.actors.forEach((actor, index) => {
                 if (actor.movies.includes(props.movie_id)) {
                   selected_actors_array = [...selected_actors_array, actor]
                 }
@@ -28,7 +28,7 @@ function AssociateMovieWithActor(props) {
       // Save original selected actors in case the fetch fails.
       setFetchActors(false);
     }
-  }, [fetch_actors, actors, selected_actors, props.actor_id])
+  }, [fetch_actors, actors, selected_actors, props.movie_id])
 
   /* Returns true if the given actor is in the set of selected actors.
    */

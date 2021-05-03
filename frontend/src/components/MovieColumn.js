@@ -18,7 +18,7 @@ class MovieColumn extends React.Component {
         });
   }
   render() {
-    if (this.state.movies === undefined || this.state.movies.length == 0) {
+    if (this.state.movies === undefined || this.state.movies.length === 0) {
       return (
         <AppLoader />
       );

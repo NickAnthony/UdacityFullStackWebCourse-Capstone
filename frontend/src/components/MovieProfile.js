@@ -144,14 +144,14 @@ function MovieProfile() {
   }
 
   if (!movie) {
-    return <AppLoader />
+    return <AppLoader />;
   }
 
   if (show_edit_movie_dialog) {
     return <EditMovie
               movie={movie}
               showDialog={setShowEditMovieDialog}
-              commitMovieEdit={commitMovieEdit}/>
+              commitMovieEdit={commitMovieEdit}/>;
   }
 
   if (show_associate_actor_dialog) {
@@ -159,7 +159,7 @@ function MovieProfile() {
               movie_title={movie.title}
               movie_id={movie.id}
               showDialog={setAssociateActorDiaglog}
-              commitActorAssociation={commitActorAssociation}/>
+              commitActorAssociation={commitActorAssociation}/>;
   }
 
   return (

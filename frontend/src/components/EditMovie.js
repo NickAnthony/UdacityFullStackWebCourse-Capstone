@@ -36,7 +36,7 @@ function EditMovie(props) {
           <div className="Profile">
             <img
               src={portrait_img_src}
-              alt={`${title} Photo`}
+              alt={`${title} Poster`}
               className="Profile-photo" />
             <div className="Profile-content Profile-content-wide">
               <p className="Form-label">Title</p>

@@ -18,7 +18,7 @@ class ActorColumn extends React.Component {
         });
   }
   render() {
-    if (this.state.actors === undefined || this.state.actors.length == 0) {
+    if (this.state.actors === undefined || this.state.actors.length === 0) {
       return (
         <AppLoader />
       );
