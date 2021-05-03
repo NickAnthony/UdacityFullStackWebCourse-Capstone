@@ -38,7 +38,7 @@ function NewMovie() {
         audience: `casting-agency`,
         scope: "read:current_user",
       });
-      const formatted_release_date = Moment(release_date.toString()).format("YYYY-MM-DD")
+      const formatted_release_date = Moment(release_date.toString()).format("YYYY-MM-DD");
       console.log(JSON.stringify({
         title: title,
         release_date: formatted_release_date,
@@ -115,7 +115,7 @@ function NewMovie() {
             !(movie_photo_url) &&
             <p className="Form-label">Image will load with url</p> }
           <div className="Submit-button-wrapper">
-            <input type="submit" value="Submit" className="Submit-button" />
+            <input type="submit" value="Submit" className="Button Submit-button" />
           </div>
         </form>
       </div>

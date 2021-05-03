@@ -14,10 +14,10 @@ class AppHeader extends React.Component {
       <div className="App-header">
         <h2>CASTING AGENCY</h2>
         <div className="Menu">
-          <Link to="/" className="Menu-button">Home</Link>
-          <Link to="/new-actor" className="Menu-button">Add Actor</Link>
-          <Link to="/new-movie" className="Menu-button">Add Movie</Link>
-          <Link to="/profile" className="Menu-button">Profile</Link>
+          <Link to="/" className="Button Menu-button">Home</Link>
+          <Link to="/new-actor" className="Button Menu-button">Add Actor</Link>
+          <Link to="/new-movie" className="Button Menu-button">Add Movie</Link>
+          <Link to="/profile" className="Button Menu-button">Profile</Link>
           <LoginButton />
           <LogoutButton />
         </div>

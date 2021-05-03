@@ -83,7 +83,6 @@ function NewActor() {
             value={name}
             onChange={e => setName(e.target.value)}
           />
-          />
           <p className="Form-label">Age</p>
           <input
             className="Form-input"
@@ -113,7 +112,7 @@ function NewActor() {
             !(portrait_url) &&
             <p className="Form-label">Image will load with url</p> }
           <div className="Submit-button-wrapper">
-            <input type="submit" value="Submit" className="Submit-button" />
+            <input type="submit" value="Submit" className="Button Submit-button" />
           </div>
         </form>
       </div>
