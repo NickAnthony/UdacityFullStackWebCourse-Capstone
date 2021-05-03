@@ -17,7 +17,7 @@ class AppHeader extends React.Component {
           <Link to="/" className="Menu-button">Home</Link>
           <Link to="/new-actor" className="Menu-button">Add Actor</Link>
           <Link to="/new-movie" className="Menu-button">Add Movie</Link>
-          <Link to="/profile" className="Menu-button">My Profile</Link>
+          <Link to="/profile" className="Menu-button">Profile</Link>
           <LoginButton />
           <LogoutButton />
         </div>
