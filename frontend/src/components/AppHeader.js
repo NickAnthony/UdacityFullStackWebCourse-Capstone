@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 
@@ -12,7 +12,9 @@ class AppHeader extends React.Component {
   render() {
     return (
       <div className="App-header">
-        <h2>CASTING AGENCY</h2>
+        <NavLink to="/" style={{ textDecoration: 'none' }}>
+          <h2>CASTING AGENCY</h2>
+        </NavLink>
         <div className="Menu">
           <Link to="/" className="Button Menu-button">Home</Link>
           <Link to="/new-actor" className="Button Menu-button">Add Actor</Link>
