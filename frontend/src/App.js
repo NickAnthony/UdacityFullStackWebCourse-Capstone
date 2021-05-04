@@ -1,13 +1,13 @@
-import './App.css';
-/* Import CSS for react-loader-spinner */
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
-} from "react-router-dom";
-import ActorColumn from './components/ActorColumn';
-import MovieColumn from './components/MovieColumn';
+  Route,
+} from 'react-router-dom';
+import './App.css';
+/* Import CSS for react-loader-spinner */
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Home from './components/Home';
 import AppHeader from './components/AppHeader';
 import NewActor from './components/NewActor';
 import Profile from './components/Profile';
@@ -15,6 +15,12 @@ import ActorProfile from './components/ActorProfile';
 import MovieProfile from './components/MovieProfile';
 import NewMovie from './components/NewMovie';
 
+/**
+ * The base App wrapper.
+ * Contains the Routes and Navigation for the whole app.
+ * @constructor
+ * @component
+ */
 function App() {
   return (
     <Router>
@@ -25,10 +31,10 @@ function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/new-actor">
-            <NewActorRoute />
+            <NewActor />
           </Route>
           <Route path="/new-movie">
-            <NewMovieRoute />
+            <NewMovie />
           </Route>
           <Route path="/profile">
             <Profile />
@@ -46,24 +52,6 @@ function App() {
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return (
-    <div className=".Body-wrapper">
-      <div className="Column-wrapper">
-        <ActorColumn/>
-        <MovieColumn/>
-      </div>
-    </div>
-  );
-}
-
-function NewActorRoute() {
-  return <NewActor />;
-}
-function NewMovieRoute() {
-  return <NewMovie />;
 }
 
 export default App;

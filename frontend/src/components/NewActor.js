@@ -3,6 +3,11 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Redirect } from 'react-router-dom';
 import { DOMAIN, no_portrait_placeholder } from '../Constants.js'
 
+/**
+ * Represent the new actor route at "/new-actor".  This page lets you add an
+ * actor or actress.
+ * @return {Component} NewActor component to create new actors.
+ */
 function NewActor() {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 

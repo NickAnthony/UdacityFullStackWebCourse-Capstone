@@ -5,7 +5,11 @@ import { Redirect } from 'react-router-dom';
 import { DOMAIN, no_movie_placeholder } from '../Constants.js'
 import Moment from 'moment';
 
-
+/**
+ * Represent the new movie route at "/new-movie".  This page lets you add an
+ * movie.
+  * @return {Component} NewMovie component to create new movies.
+ */
 function NewMovie() {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   Moment.locale('en');
