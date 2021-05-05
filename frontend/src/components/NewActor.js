@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Redirect } from 'react-router-dom';
-import { DOMAIN, no_portrait_placeholder } from '../Constants.js'
+import { DOMAIN, noPortraitPlaceholder } from '../Constants.js'
 
 /**
  * Represent the new actor route at "/new-actor".  This page lets you add an
@@ -13,7 +13,7 @@ function NewActor() {
 
   // Set up state
   const [portrait_url, setPortraitUrl] = useState("");
-  const [portrait_img_src, setPortraitImgSrc] = useState(no_portrait_placeholder);
+  const [portrait_img_src, setPortraitImgSrc] = useState(noPortraitPlaceholder);
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [gender, setGender] = useState("");
@@ -24,7 +24,7 @@ function NewActor() {
     if (event.target.value) {
       setPortraitImgSrc(event.target.value);
     } else {
-      setPortraitImgSrc(no_portrait_placeholder);
+      setPortraitImgSrc(noPortraitPlaceholder);
     }
   }
 

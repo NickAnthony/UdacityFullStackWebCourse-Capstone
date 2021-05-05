@@ -1,6 +1,6 @@
 import React from 'react';
 import ActorRow from './ActorRow';
-import { DOMAIN, no_portrait_placeholder } from '../Constants.js';
+import { DOMAIN, noPortraitPlaceholder } from '../Constants.js';
 import AppLoader from './AppLoader';
 
 class ActorColumn extends React.Component {
@@ -29,7 +29,7 @@ class ActorColumn extends React.Component {
         <h3 className="Column-header">Available</h3>
         {
           this.state.actors.map((actor, index) => {
-            var image_src = no_portrait_placeholder
+            var image_src = noPortraitPlaceholder
             if (actor.portrait_url !== undefined) {
               image_src = actor.portrait_url;
             }

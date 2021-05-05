@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DOMAIN, no_movie_placeholder } from '../Constants.js';
+import { DOMAIN, noMoviePlaceholder } from '../Constants.js';
 import AppLoader from "./AppLoader";
 import NonLinkThumbnail from "./NonLinkThumbnail";
 
@@ -81,7 +81,7 @@ function AssociateActorWithMovie(props) {
           <div className="Movie-column">
             {
               movies.map((movie, index) => {
-                var image_src = no_movie_placeholder
+                var image_src = noMoviePlaceholder
                 if (movie.movie_photo !== undefined) {
                   image_src = movie.movie_photo;
                 }

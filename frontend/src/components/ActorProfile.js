@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth0 } from "@auth0/auth0-react";
-import { DOMAIN, no_portrait_placeholder, no_movie_placeholder } from '../Constants.js';
-import { useParams } from "react-router-dom";
-import AppLoader from "./AppLoader";
-import Thumbnail from "./Thumbnail";
-import AssociateActorWithMovie from "./AssociateActorWithMovie";
-import EditActor from "./EditActor";
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import React, {useState, useEffect} from 'react';
+import {useAuth0} from '@auth0/auth0-react';
+import {DOMAIN, noPortraitPlaceholder, noMoviePlaceholder} from '../Constants.js';
+import {useParams} from 'react-router-dom';
+import AppLoader from './AppLoader';
+import Thumbnail from './Thumbnail';
+import AssociateActorWithMovie from './AssociateActorWithMovie';
+import EditActor from './EditActor';
+import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 function ActorProfile() {
@@ -25,7 +25,7 @@ function ActorProfile() {
           .then((result) => {
             console.log(result);
             if (result.actor.portrait_url === undefined) {
-              result.actor.portrait_url = no_portrait_placeholder;
+              result.actor.portrait_url = noPortraitPlaceholder;
             }
             setActor(result.actor);
             setMovies(result.movies);
@@ -43,7 +43,7 @@ function ActorProfile() {
     try {
       const accessToken = await getAccessTokenSilently({
         audience: `casting-agency`,
-        scope: "read:current_user",
+        scope: 'read:current_user',
       });
       // Opportunistically use the setMovies to set the movies.
       setMovies(selected_movies);
@@ -79,7 +79,7 @@ function ActorProfile() {
     try {
       const accessToken = await getAccessTokenSilently({
         audience: `casting-agency`,
-        scope: "read:current_user",
+        scope: 'read:current_user',
       });
       // Opportunistically set the new info.
       setActor({
@@ -160,25 +160,25 @@ function ActorProfile() {
   }
 
   return (
-    <div className="Profile-wrapper">
-      <div className="Profile-body">
+    <div className='Profile-wrapper'>
+      <div className='Profile-body'>
 
-        <div className="Profile">
-          <img src={actor.portrait_url} alt={actor.name + " Portrait"} className="Profile-photo" />
-          <div className="Profile-content">
-            <p className="Profile-name">{actor.name}</p>
+        <div className='Profile'>
+          <img src={actor.portrait_url} alt={actor.name + ' Portrait'} className='Profile-photo' />
+          <div className='Profile-content'>
+            <p className='Profile-name'>{actor.name}</p>
             <h2>{actor.gender}, {actor.age}</h2>
             {
               (isAuthenticated) &&
-                  <div className="Profile-menu">
-                    <button className="Button Profile-menu-button"  onClick={() => setAssociateMovieDiaglog(true)}>Update movies</button>
-                    <button className="Button Profile-menu-button"  onClick={() => setShowEditActorDialog(true)}>Edit</button>
-                    <button className="Button Profile-menu-button-delete"  onClick={() => {}}>Delete actor</button>
+                  <div className='Profile-menu'>
+                    <button className='Button Profile-menu-button'  onClick={() => setAssociateMovieDiaglog(true)}>Update movies</button>
+                    <button className='Button Profile-menu-button'  onClick={() => setShowEditActorDialog(true)}>Edit</button>
+                    <button className='Button Profile-menu-button-delete'  onClick={() => {}}>Delete actor</button>
                   </div>
             }
             {
               (!isAuthenticated) &&
-                  <div className="Profile-menu">
+                  <div className='Profile-menu'>
                     <h4>
                         Only Casting Directors or Executive Producers can make
                         changes. <br/> Please log in to edit.
@@ -188,33 +188,33 @@ function ActorProfile() {
           </div>
         </div>
 
-        <div className="Movie-column-wrapper">
-          <h3 className="Column-header">Upcoming</h3>
-          <div className="Movie-column">
+        <div className='Movie-column-wrapper'>
+          <h3 className='Column-header'>Upcoming</h3>
+          <div className='Movie-column'>
             {
               movies.filter((movie) => {
                 // Filter to with release dates today or in the future.
                 return (new Date() <= new Date(movie.release_date));
               }).map((movie, index) => {
-                var image_src = no_movie_placeholder
+                var image_src = noMoviePlaceholder
                 if (movie.movie_photo !== undefined) {
                   image_src = movie.movie_photo;
                 }
-                return <Thumbnail id={movie.id} type="movies" index={index} key={index} image_src={image_src} title={movie.title}/>;
+                return <Thumbnail id={movie.id} type='movies' index={index} key={index} image_src={image_src} title={movie.title}/>;
             })}
           </div>
-          <h3 className="Column-header">Released</h3>
-          <div className="Movie-column">
+          <h3 className='Column-header'>Released</h3>
+          <div className='Movie-column'>
             {
               movies.filter((movie) => {
                 // Filter to with release dates in the past.
                 return (new Date() > new Date(movie.release_date));
               }).map((movie, index) => {
-                var image_src = no_movie_placeholder
+                var image_src = noMoviePlaceholder
                 if (movie.movie_photo !== undefined) {
                   image_src = movie.movie_photo;
                 }
-                return <Thumbnail id={movie.id} type="movies" index={index} key={index} image_src={image_src} title={movie.title}/>;
+                return <Thumbnail id={movie.id} type='movies' index={index} key={index} image_src={image_src} title={movie.title}/>;
             })}
           </div>
         </div>

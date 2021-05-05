@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { no_portrait_placeholder } from '../Constants.js'
+import { noPortraitPlaceholder } from '../Constants.js'
 
 function EditActor(props) {
   // Set up state
@@ -14,7 +14,7 @@ function EditActor(props) {
     if (event.target.value) {
       setPortraitImgSrc(event.target.value);
     } else {
-      setPortraitImgSrc(no_portrait_placeholder);
+      setPortraitImgSrc(noPortraitPlaceholder);
     }
   }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Thumbnail from './Thumbnail';
-import { DOMAIN, no_movie_placeholder } from '../Constants.js';
+import { DOMAIN, noMoviePlaceholder } from '../Constants.js';
 import AppLoader from './AppLoader';
 
 class MovieColumn extends React.Component {
@@ -33,7 +33,7 @@ class MovieColumn extends React.Component {
               // Filter to with release dates today or in the future.
               return (new Date() <= new Date(movie.release_date));
             }).map((movie, index) => {
-              var image_src = no_movie_placeholder;
+              var image_src = noMoviePlaceholder;
               if (movie.movie_photo !== undefined) {
                 image_src = movie.movie_photo;
               }
@@ -47,7 +47,7 @@ class MovieColumn extends React.Component {
               // Filter to with release dates in the past.
               return (new Date() > new Date(movie.release_date));
             }).map((movie, index) => {
-              var image_src = no_movie_placeholder;
+              var image_src = noMoviePlaceholder;
               if (movie.movie_photo !== undefined) {
                 image_src = movie.movie_photo;
               }

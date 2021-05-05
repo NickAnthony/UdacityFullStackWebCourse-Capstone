@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import DatePicker from 'react-date-picker';
 import { Redirect } from 'react-router-dom';
-import { DOMAIN, no_movie_placeholder } from '../Constants.js'
+import { DOMAIN, noMoviePlaceholder } from '../Constants.js'
 import Moment from 'moment';
 
 /**
@@ -16,7 +16,7 @@ function NewMovie() {
 
   // Set up state
   const [movie_photo_url, setMoviePhotoUrl] = useState(null);
-  const [photo_img_src, setPhotoImgSrc] = useState(no_movie_placeholder);
+  const [photo_img_src, setPhotoImgSrc] = useState(noMoviePlaceholder);
   const [title, setTitle] = useState("");
   const [release_date, setReleaseDate] = useState(new Date());
   const [redirect, setRedirect] = useState("");
@@ -26,7 +26,7 @@ function NewMovie() {
     if (event.target.value) {
       setPhotoImgSrc(event.target.value);
     } else {
-      setPhotoImgSrc(no_movie_placeholder);
+      setPhotoImgSrc(noMoviePlaceholder);
     }
   }
 

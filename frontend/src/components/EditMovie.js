@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { no_movie_placeholder } from '../Constants.js'
+import { noMoviePlaceholder } from '../Constants.js'
 import DatePicker from 'react-date-picker';
 
 function EditMovie(props) {
@@ -14,7 +14,7 @@ function EditMovie(props) {
     if (event.target.value) {
       setPortraitImgSrc(event.target.value);
     } else {
-      setPortraitImgSrc(no_movie_placeholder);
+      setPortraitImgSrc(noMoviePlaceholder);
     }
   }
 

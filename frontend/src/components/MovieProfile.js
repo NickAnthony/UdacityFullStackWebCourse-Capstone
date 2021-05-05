@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
-import { DOMAIN, no_portrait_placeholder, no_movie_placeholder } from '../Constants.js';
+import { DOMAIN, noPortraitPlaceholder, noMoviePlaceholder } from '../Constants.js';
 import { useParams } from "react-router-dom";
 import AppLoader from "./AppLoader";
 import Thumbnail from "./Thumbnail";
@@ -30,7 +30,7 @@ function MovieProfile() {
           .then((result) => {
             console.log(result);
             if (result.movie.movie_photo === undefined) {
-              result.movie.movie_photo = no_movie_placeholder;
+              result.movie.movie_photo = noMoviePlaceholder;
             }
             setMovie(result.movie);
             setActors(result.actors);
@@ -199,7 +199,7 @@ function MovieProfile() {
           <div className="Movie-column">
             {
               actors.map((actor, index) => {
-                var image_src = no_portrait_placeholder;
+                var image_src = noPortraitPlaceholder;
                 if (actor.portrait_url !== undefined) {
                   image_src = actor.portrait_url;
                 }
