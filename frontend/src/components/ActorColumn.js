@@ -52,8 +52,8 @@ class ActorColumn extends React.Component {
               imageSrc = actor.portrait_url;
             }
             return <ActorRow
-              actor_id={actor.id}
-              image_src={imageSrc}
+              actorId={actor.id}
+              imageSrc={imageSrc}
               key={index}
               index={index}
               name={actor.name}/>;
