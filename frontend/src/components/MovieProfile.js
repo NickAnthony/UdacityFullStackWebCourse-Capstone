@@ -156,8 +156,8 @@ function MovieProfile() {
 
   if (show_associate_actor_dialog) {
     return <AssociateMovieWithActor
-              movie_title={movie.title}
-              movie_id={movie.id}
+              movieTitle={movie.title}
+              movieId={movie.id}
               showDialog={setAssociateActorDiaglog}
               commitActorAssociation={commitActorAssociation}/>;
   }
