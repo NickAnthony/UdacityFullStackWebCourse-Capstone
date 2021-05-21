@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import ActorColumn from './ActorColumn';
 import MovieColumn from './MovieColumn';
 
@@ -7,7 +7,7 @@ import MovieColumn from './MovieColumn';
  * @return {Component} NewActor component to create new actors.
  */
 const Home = () => {
-  return(
+  return (
     <div className="Body-wrapper">
       <div className="Column-wrapper">
         <ActorColumn/>
