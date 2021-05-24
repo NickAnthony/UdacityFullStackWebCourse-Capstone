@@ -10,7 +10,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Home from './components/Home';
 import AppHeader from './components/AppHeader';
 import NewActor from './components/NewActor';
-import Profile from './components/Profile';
+import UserProfile from './components/UserProfile';
 import ActorProfile from './components/ActorProfile';
 import MovieProfile from './components/MovieProfile';
 import NewMovie from './components/NewMovie';
@@ -37,7 +37,7 @@ function App() {
             <NewMovie />
           </Route>
           <Route path="/profile">
-            <Profile />
+            <UserProfile />
           </Route>
           <Route path="/actors/:id">
             <ActorProfile />
