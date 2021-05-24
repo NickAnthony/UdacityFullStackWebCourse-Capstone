@@ -32,14 +32,23 @@ TODO: write react tests
 
 ---
 
-## Python Code Style
+## Javascript Code Style
 
-All python files have been checked with `pycodestyle`.
+All react/javascript files have been checked with `eslint`.  Please see
+https://eslint.org/ for more information.  It follows the Google style guide
+defaults.
+
 Using the following to double check code style:
 
 ```Shell
-pycodestyle <filename.py>
+npx eslint <filename.js> --fix
 ```
+
+### PropTypes
+
+All components that take props all need to use PropTypes to type check the
+props.  See https://reactjs.org/docs/typechecking-with-proptypes.html for
+more detailed information.
 
 ---
 
