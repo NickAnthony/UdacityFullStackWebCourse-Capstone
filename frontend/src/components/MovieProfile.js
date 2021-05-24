@@ -92,6 +92,11 @@ function MovieProfile() {
     }
   };
 
+  /**
+   * Takes the current input and posts the patch to the database.
+   * Opportunistically makes the edit, then rollbacks if it fails for some
+   * reason.  Only Executive Producers can patch edits.
+   */
   const commitMovieEdit = async (newTitle, newReleaseDate, newMoviePhoto) => {
     // Save the current state in case the update fails.
     const originalMovie = movie;
