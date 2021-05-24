@@ -6,7 +6,7 @@ const Thumbnail = props => {
   return (
     <Link to={profile_link} style={{ textDecoration: 'none' }}>
       <div className="Thumbnail" key={props.index}>
-        <img src={props.image_src} alt={props.title + " Image"} height="250"></img>
+        <img src={props.imageSrc} alt={props.title + " Image"} height="250"></img>
         <div className="Thumbnail-text">
           <div>{props.title}</div>
         </div>
