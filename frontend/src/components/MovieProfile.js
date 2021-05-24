@@ -1,32 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth0 } from "@auth0/auth0-react";
-import { DOMAIN, noPortraitPlaceholder, noMoviePlaceholder } from '../Constants.js';
-import { useParams } from "react-router-dom";
-import AppLoader from "./AppLoader";
-import Thumbnail from "./Thumbnail";
-import EditMovie from "./EditMovie";
-import AssociateMovieWithActor from "./AssociateMovieWithActor";
+import React, {useState, useEffect} from 'react';
+import {useAuth0} from '@auth0/auth0-react';
+import {
+  DOMAIN,
+  noPortraitPlaceholder,
+  noMoviePlaceholder,
+} from '../Constants.js';
+import {useParams} from 'react-router-dom';
+import AppLoader from './AppLoader';
+import Thumbnail from './Thumbnail';
+import EditMovie from './EditMovie';
+import AssociateMovieWithActor from './AssociateMovieWithActor';
 import Moment from 'moment';
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
+/**
+ * Represents a profile of a movie.  This includes the title, release date,
+ * and the set of actors/actress in the movie.
+ * Gets the id from the url, then fetches that movie from the database, along
+ * with all the actors.
+ * Contains the callbacks and subcomponents edit this movie and save the edits
+ * to the database.
+* When a user is signed in, they can then see the appropriate edit buttons.
+ * @component
+ * @return {Component} the movie profile page
+ */
 function MovieProfile() {
   // Get id from the url
-  let { id } = useParams();
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const {id} = useParams();
+  const {isAuthenticated, getAccessTokenSilently} = useAuth0();
   Moment.locale('en');
 
   // Set up state
   const [movie, setMovie] = useState(null);
   const [actors, setActors] = useState([]);
-  const [fetch_movie, setFetchMovie] = useState(false);
-  const [show_associate_actor_dialog, setAssociateActorDiaglog] = useState(false);
-  const [show_edit_movie_dialog, setShowEditMovieDialog] = useState(false);
+  const [fetchMovie, setFetchMovie] = useState(false);
+  const [showAssociateActorDialog, setAssociateActorDiaglog] = useState(false);
+  const [showEditMovieDialog, setShowEditMovieDialog] = useState(false);
 
   useEffect(() => {
-    if (!fetch_movie) {
+    if (!fetchMovie) {
       fetch(`${DOMAIN}/movies/${id}/actors`)
-          .then(response => response.json())
+          .then((response) => response.json())
           .then((result) => {
             console.log(result);
             if (result.movie.movie_photo === undefined) {
@@ -37,61 +52,65 @@ function MovieProfile() {
           });
       setFetchMovie(true);
     }
-  }, [fetch_movie, id])
+  }, [fetchMovie, id]);
 
 
   /* Commits the chosen actor-to-movie association to the database.
    */
-  const commitActorAssociation = async (movie_id, selected_actors) => {
+  const commitActorAssociation = async (movieId, selectedActors) => {
     // Save the current movie state in case the update fails.
-    const original_actors = actors;
+    const originalActors = actors;
 
     try {
       const accessToken = await getAccessTokenSilently({
         audience: `casting-agency`,
-        scope: "read:current_user",
+        scope: 'read:current_user',
       });
       // Opportunistically use the setActors to set the movies.
-      setActors(selected_actors);
-      fetch(`${DOMAIN}/movies/${movie_id}`, {
+      setActors(selectedActors);
+      fetch(`${DOMAIN}/movies/${movieId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          actors: selected_actors.map(actor => actor.id)
-        })
+          actors: selectedActors.map((actor) => actor.id),
+        }),
       })
-      .then(response => response.json())
-      .then((result) => {
-        if (result.success) {
-          console.log(result);
-        } else {
-          movieUpdateFailed(result.message, original_actors);
-        }
-      });
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.success) {
+              console.log(result);
+            } else {
+              movieUpdateFailed(result.message, originalActors);
+            }
+          });
     } catch (e) {
       console.log(e.message);
-      movieUpdateFailed(e.message, original_actors);
+      movieUpdateFailed(e.message, originalActors);
     }
-  }
+  };
 
-  const commitMovieEdit = async (new_title, new_release_date, new_movie_photo) => {
+  const commitMovieEdit = async (newTitle, newReleaseDate, newMoviePhoto) => {
     // Save the current state in case the update fails.
-    const original_movie = movie;
+    const originalMovie = movie;
 
     try {
       const accessToken = await getAccessTokenSilently({
         audience: `casting-agency`,
-        scope: "read:current_user",
+        scope: 'read:current_user',
       });
       // Opportunistically set the new info.
-      const formatted_new_release_date = Moment(new_release_date.toString()).format("YYYY-MM-DD")
+      // Use Moment to format the release date.
+      // eslint-disable-next-line new-cap
+      const formattedNewReleaseDate = Moment(
+          newReleaseDate.toString(),
+      ).format('YYYY-MM-DD');
       setMovie({
-        title: new_title,
-        release_date: formatted_new_release_date,
-        movie_photo: new_movie_photo,
+        title: newTitle,
+        release_date: formattedNewReleaseDate,
+        movie_photo: newMoviePhoto,
         actors: movie.actors,
       });
       // TO-DO Make this Async
@@ -102,64 +121,64 @@ function MovieProfile() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: new_title,
-          release_date: formatted_new_release_date,
-        })
+          title: newTitle,
+          release_date: formattedNewReleaseDate,
+        }),
       })
-      .then(response => response.json())
-      .then((result) => {
-        if (result.success) {
-          console.log(result);
-        } else {
-          editMovieFailed(result.message, original_movie);
-        }
-      });
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.success) {
+              console.log(result);
+            } else {
+              editMovieFailed(result.message, originalMovie);
+            }
+          });
     } catch (e) {
       console.log(e.message);
-      editMovieFailed(e.message, original_movie);
+      editMovieFailed(e.message, originalMovie);
     }
-  }
+  };
 
-  const editMovieFailed = (error_message, original_movie) => {
-    setMovie(original_movie);
-    editFailed(error_message);
-  }
+  const editMovieFailed = (errorMessage, originalMovie) => {
+    setMovie(originalMovie);
+    editFailed(errorMessage);
+  };
 
-  const movieUpdateFailed = (error_message, original_actors) => {
-    setActors(original_actors);
-    editFailed(error_message);
-  }
+  const movieUpdateFailed = (errorMessage, originalActors) => {
+    setActors(originalActors);
+    editFailed(errorMessage);
+  };
 
-  const editFailed = (error_message) => {
+  const editFailed = (errorMessage) => {
     confirmAlert({
-        title: 'Failed to save changes!',
-        message: error_message,
-        buttons: [
-          {
-            label: 'Ok',
-            onClick: () => {}
-          }
-        ]
+      title: 'Failed to save changes!',
+      message: errorMessage,
+      buttons: [
+        {
+          label: 'Ok',
+          onClick: () => {},
+        },
+      ],
     });
-  }
+  };
 
   if (!movie) {
     return <AppLoader />;
   }
 
-  if (show_edit_movie_dialog) {
+  if (showEditMovieDialog) {
     return <EditMovie
-              movie={movie}
-              showDialog={setShowEditMovieDialog}
-              commitMovieEdit={commitMovieEdit}/>;
+      movie={movie}
+      showDialog={setShowEditMovieDialog}
+      commitMovieEdit={commitMovieEdit}/>;
   }
 
-  if (show_associate_actor_dialog) {
+  if (showAssociateActorDialog) {
     return <AssociateMovieWithActor
-              movieTitle={movie.title}
-              movieId={movie.id}
-              showDialog={setAssociateActorDiaglog}
-              commitActorAssociation={commitActorAssociation}/>;
+      movieTitle={movie.title}
+      movieId={movie.id}
+      showDialog={setAssociateActorDiaglog}
+      commitActorAssociation={commitActorAssociation}/>;
   }
 
   return (
@@ -167,19 +186,38 @@ function MovieProfile() {
       <div className="Profile-body">
 
         <div className="Profile">
-          <img src={movie.movie_photo} alt={movie.title + " Poster Photo"} className="Profile-photo" />
+          <img
+            src={movie.movie_photo}
+            alt={movie.title + ' Poster Photo'}
+            className="Profile-photo" />
           <div className="Profile-content">
             <p className="Profile-name">{movie.title}</p>
             <div>
               <h3>Release date:</h3>
-              <h2>{Moment(movie.release_date).format("MMMM Do, YYYY")}</h2>
+              <h2>{
+                // eslint-disable-next-line new-cap
+                Moment(movie.release_date).format('MMMM Do, YYYY')
+              }</h2>
             </div>
             {
               (isAuthenticated) &&
                   <div className="Profile-menu">
-                    <button className="Button Profile-menu-button"  onClick={() => setAssociateActorDiaglog(true)}>Cast actors/actresses</button>
-                    <button className="Button Profile-menu-button"  onClick={() => setShowEditMovieDialog(true)}>Edit</button>
-                    <button className="Button Profile-menu-button-delete"  onClick={() => {}}>Delete</button>
+                    <button
+                      className="Button Profile-menu-button"
+                      onClick={() => setAssociateActorDiaglog(true)}>
+                      Cast actors/actresses
+                    </button>
+                    <button
+                      className="Button Profile-menu-button"
+                      onClick={() => setShowEditMovieDialog(true)}>
+                      Edit
+                    </button>
+                    { /* TODO Implement: Delete */ }
+                    <button
+                      className="Button Profile-menu-button-delete"
+                      onClick={() => {}}>
+                      Delete
+                    </button>
                   </div>
             }
             {
@@ -199,12 +237,18 @@ function MovieProfile() {
           <div className="Movie-column">
             {
               actors.map((actor, index) => {
-                var image_src = noPortraitPlaceholder;
+                let imageSrc = noPortraitPlaceholder;
                 if (actor.portrait_url !== undefined) {
-                  image_src = actor.portrait_url;
+                  imageSrc = actor.portrait_url;
                 }
-                return <Thumbnail id={actor.id} type="actors" index={index} key={index} image_src={image_src} title={actor.name}/>;
-            })}
+                return <Thumbnail
+                  id={actor.id}
+                  type="actors"
+                  index={index}
+                  key={index}
+                  imageSrc={imageSrc}
+                  title={actor.name}/>;
+              })}
           </div>
         </div>
 
