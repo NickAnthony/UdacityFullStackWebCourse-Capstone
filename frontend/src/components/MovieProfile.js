@@ -21,7 +21,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
  * with all the actors.
  * Contains the callbacks and subcomponents edit this movie and save the edits
  * to the database.
-* When a user is signed in, they can then see the appropriate edit buttons.
+ * When a user is signed in, they can then see the appropriate edit buttons.
  * @component
  * @return {Component} the movie profile page
  */
@@ -55,7 +55,10 @@ function MovieProfile() {
   }, [fetchMovie, id]);
 
 
-  /* Commits the chosen actor-to-movie association to the database.
+  /** Commits the chosen actor-to-movie association to the database.
+   * @param {object} movieId - the id of the current movie being edited
+   * @param {object} selectedActors - the set of actors selected to be in the
+   *                                  movie.
    */
   const commitActorAssociation = async (movieId, selectedActors) => {
     // Save the current movie state in case the update fails.
@@ -96,6 +99,10 @@ function MovieProfile() {
    * Takes the current input and posts the patch to the database.
    * Opportunistically makes the edit, then rollbacks if it fails for some
    * reason.  Only Executive Producers can patch edits.
+   * @param {string} newTitle - the new title of the movie
+   * @param {Date} newReleaseDate - the new release date of the movie
+   * @param {string} newMoviePhoto - the new poster photo of the movie
+   * Note that these params will be default set to the existing values.
    */
   const commitMovieEdit = async (newTitle, newReleaseDate, newMoviePhoto) => {
     // Save the current state in case the update fails.

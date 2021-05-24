@@ -49,7 +49,10 @@ function ActorProfile() {
     }
   }, [fetchActor, id]);
 
-  /* Commits the chosen actor-to-movie association to the database.
+  /** Commits the chosen actor-to-movie association to the database.
+   * @param {object} actorId - the id of the current actor being edited
+   * @param {object} selectedMovies - the set of movies selected in which the
+   *                                  actor/actress will act
    */
   const commitActorAssociation = async (actorId, selectedMovies) => {
     // Save the current movie state in case the update fails.
@@ -87,6 +90,17 @@ function ActorProfile() {
     }
   };
 
+  /**
+   * Takes the current input and posts the patch to the database.
+   * Opportunistically makes the edit, then rollbacks if it fails for some
+   * reason.  Executive Producers and Casting Agents can make patch edits.
+   * @param {object} newName - the new name of the actor/actress
+   * @param {number} newAge - the new age of the actor/actress
+   * @param {number} newGender - the new gender of the actor/actress
+   * @param {object} newPortraitUrl - the new portrait photo of the
+   *                                  actor/actress
+   * Note that these params will be default set to the existing values.
+   */
   const commitActorEdit = async (
       newName, newAge, newGender, newPortraitUrl,
   ) => {
