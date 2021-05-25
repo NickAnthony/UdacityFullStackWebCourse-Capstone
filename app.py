@@ -22,7 +22,7 @@ from models import (
 
 def create_app(test_config=None):
 
-    app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
+    app = Flask(__name__, static_folder='frontend/build', static_url_path='')
     setup_db(app)
     CORS(app)
 
