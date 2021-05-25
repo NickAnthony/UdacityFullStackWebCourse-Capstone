@@ -8,8 +8,8 @@
 # testing
 /coverage
 
-# production
-/build
+# production - we want to push the production build to heroku
+# /build
 
 # misc
 .DS_Store
