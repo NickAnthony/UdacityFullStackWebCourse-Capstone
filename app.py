@@ -9,7 +9,8 @@ from flask import (
     Flask,
     abort,
     jsonify,
-    request
+    request,
+    send_from_directory
 )
 from flask_cors import CORS
 from models import (
