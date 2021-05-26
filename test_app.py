@@ -42,27 +42,34 @@ class CastingAgencyTestCase(unittest.TestCase):
             'name': 'George Clooney',
             'age': 59,
             'gender': "Male",
-            'portrait_url': "https://m.media-amazon.com/images/M/MV5BMjEyMTEyOTQ0MV5BMl5BanBnXkFtZTcwNzU3NTMzNw@@._V1_UY1200_CR126,0,630,1200_AL_.jpg",
+            'portrait_url': ("https://m.media-amazon.com/images/M/MV5BMjEyMTEy"
+                             "OTQ0MV5BMl5BanBnXkFtZTcwNzU3NTMzNw@@._V1_UY1200_"
+                             "CR126,0,630,1200_AL_.jpg"),
 
         }
 
         self.new_movie = {
             "title": "Ocean's Eleven",
             "release_date": "2001-12-07",
-            "movie_photo": "https://m.media-amazon.com/images/M/MV5BYzVmYzVkMmUtOGRhMi00MTNmLThlMmUtZTljYjlkMjNkMjJkXkEyXkFqcGdeQXVyNDk3NzU2MTQ@._V1_.jpg",
+            "movie_photo": ("https://m.media-amazon.com/images/M/MV5BYzVmYzVkM"
+                            "mUtOGRhMi00MTNmLThlMmUtZTljYjlkMjNkMjJkXkEyXkFqcG"
+                            "deQXVyNDk3NzU2MTQ@._V1_.jpg"),
         }
         # Prepopulate the database
         new_actress = Actor(
             name="Amy Adams",
             age=46,
             gender="Female",
-            portrait_url="https://m.media-amazon.com/images/M/MV5BMTg2NTk2MTgxMV5BMl5BanBnXkFtZTgwNjcxMjAzMTI@._V1_.jpg",
+            portrait_url=("https://m.media-amazon.com/images/M/MV5BMTg2NTk2MT"
+                          "gxMV5BMl5BanBnXkFtZTgwNjcxMjAzMTI@._V1_.jpg"),
         )
         new_movie = Movie(
             title="The Master",
             release_date=datetime.datetime.strptime("2012-09-21",
                                                     "%Y-%m-%d").date(),
-            movie_photo="https://m.media-amazon.com/images/M/MV5BMTQ2NjQ5MzMwMF5BMl5BanBnXkFtZTcwMjczNTAzOA@@._V1_UY1200_CR90,0,630,1200_AL_.jpg",
+            movie_photo=("https://m.media-amazon.com/images/M/MV5BMTQ2NjQ5MzMw"
+                         "MF5BMl5BanBnXkFtZTcwMjczNTAzOA@@._V1_UY1200_CR90,0,"
+                         "630,1200_AL_.jpg"),
 
         )
         new_actress.insert()
@@ -450,6 +457,53 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Resource was not found')
 
+    def test_patch_actor_portrait_succeeds(self):
+        res = self.client().post('/actors',
+                                 headers=self.ex_producer_token,
+                                 json={
+                                     'name': self.new_actor['name'],
+                                     'age': self.new_actor['age'],
+                                     'gender': self.new_actor['gender']
+                                 })
+        data = json.loads(res.data)
+        new_actor_id = data['actors'][0]['id']
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['actors'][0]['portrait_url'], None)
+
+        # Patch the new actor just inserted.
+        res = self.client().patch('/actors/%d' % new_actor_id,
+                                  headers=self.ex_producer_token,
+                                  json={
+                                      'portrait_url': self.new_actor[
+                                        'portrait_url'
+                                       ],
+                                  })
+        data = json.loads(res.data)
+        new_actor_id = data['actors'][0]['id']
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['actors'][0]['portrait_url'],
+                         self.new_actor['portrait_url'])
+
+        # Assert the new actor was patched.
+        res = self.client().get('/actors')
+        data = json.loads(res.data)
+        actor_exists = False
+        for actor in data['actors']:
+            if actor['id'] == new_actor_id:
+                actor_exists = True
+                self.assertEqual(actor['name'], self.new_actor['name'])
+                self.assertEqual(actor['portrait_url'],
+                                 self.new_actor['portrait_url'])
+        self.assertTrue(actor_exists)
+
+        # Clean up DB after creating new actor
+        res = self.client().delete('/actors/%d' % new_actor_id,
+                                   headers=self.ex_producer_token)
+        self.assertEqual(res.status_code, 200)
+
     # ------------------------------------------------------------
     # Testing '/movies' GET endpoint
     # ------------------------------------------------------------
@@ -759,6 +813,52 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Resource was not found')
+
+    def test_patch_movie_photo_succeeds(self):
+        res = self.client().post(
+            '/movies',
+            headers=self.ex_producer_token,
+            json={
+                'title': self.new_movie['title'],
+                'release_date': self.new_movie['release_date']})
+        data = json.loads(res.data)
+        new_movie_id = data['movies'][0]['id']
+        new_movie_photo = data['movies'][0]['movie_photo']
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(new_movie_photo, None)
+
+        # Patch the new movie just inserted.
+        res = self.client().patch('/movies/%d' % new_movie_id,
+                                  headers=self.ex_producer_token,
+                                  json={
+                                      'movie_photo': self.new_movie[
+                                        'movie_photo'
+                                      ],
+                                  })
+        data = json.loads(res.data)
+        new_movie_id = data['movies'][0]['id']
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['movies'][0]['movie_photo'],
+                         self.new_movie['movie_photo'])
+
+        # Assert the new movie was patched.
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+        movie_exists = False
+        for movie in data['movies']:
+            if movie['id'] == new_movie_id:
+                movie_exists = True
+                self.assertEqual(movie['title'], self.new_movie['title'])
+                self.assertEqual(movie['movie_photo'],
+                                 self.new_movie['movie_photo'])
+        self.assertTrue(movie_exists)
+
+        # Clean up DB after creating new movie
+        res = self.client().delete('/movies/%d' % new_movie_id,
+                                   headers=self.ex_producer_token)
+        self.assertEqual(res.status_code, 200)
 
 
 # Make the tests conveniently executable

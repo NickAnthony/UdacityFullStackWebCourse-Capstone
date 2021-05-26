@@ -208,6 +208,8 @@ def create_app(test_config=None):
         name = request.get_json().get('name', actor.name)
         age = request.get_json().get('age', actor.age)
         gender = request.get_json().get('gender', actor.gender)
+        portrait_url = request.get_json().get('portrait_url',
+                                              actor.portrait_url)
         movie_ids = request.get_json().get('movies', [])
         if movie_ids:
             movies = Movie.query.filter(Movie.id.in_(movie_ids)).all()
@@ -224,6 +226,7 @@ def create_app(test_config=None):
             actor.name = name
             actor.age = age
             actor.gender = gender
+            actor.portrait_url = portrait_url
             actor.movies = movies
             actor.update()
             return jsonify({
@@ -403,6 +406,7 @@ def create_app(test_config=None):
             'release_date',
             "{:%Y-%m-%d}".format(movie.release_date)
         )
+        movie_photo = req_json.get('movie_photo', movie.movie_photo)
         actor_ids = req_json.get('actors', None)
         if actor_ids:
             actors = Actor.query.filter(Actor.id.in_(actor_ids)).all()
@@ -423,6 +427,7 @@ def create_app(test_config=None):
             movie.title = title
             movie.release_date = release_date
             movie.actors = actors
+            movie.movie_photo = movie_photo
             movie.update()
             return jsonify({
                 'success': True,
