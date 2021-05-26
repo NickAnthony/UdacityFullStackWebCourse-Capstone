@@ -135,6 +135,7 @@ function MovieProfile() {
         body: JSON.stringify({
           title: newTitle,
           release_date: formattedNewReleaseDate,
+          movie_photo: newMoviePhoto,
         }),
       })
           .then((response) => response.json())
