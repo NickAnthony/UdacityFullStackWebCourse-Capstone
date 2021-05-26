@@ -52,7 +52,7 @@ function NewMovie() {
       ).format('YYYY-MM-DD');
       console.log(JSON.stringify({
         title: title,
-        releaseDate: formattedReleaseDate,
+        release_date: formattedReleaseDate,
         movie_photo: moviePhotoUrl,
       }));
       // TO-DO Make this Async
@@ -64,7 +64,7 @@ function NewMovie() {
         },
         body: JSON.stringify({
           title: title,
-          releaseDate: formattedReleaseDate,
+          release_date: formattedReleaseDate,
           movie_photo: moviePhotoUrl,
         }),
       })
@@ -112,7 +112,7 @@ function NewMovie() {
           onChange={setReleaseDate}
           value={releaseDate}
         />
-        <p className="Form-label">Portait Photo</p>
+        <p className="Form-label">Movie Poster Photo</p>
         <input
           className="Form-input"
           type="url"
