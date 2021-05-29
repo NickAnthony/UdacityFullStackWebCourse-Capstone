@@ -9,7 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 # production - we want to push the react production build to heroku
-# build/
+build/
 develop-eggs/
 dist/
 downloads/
