@@ -2,7 +2,9 @@
 
 UdacityFullStackWebCourse Capstone Project.
 
-The app is live at: https://nickanthony-casting-agency.herokuapp.com/
+The app client is live at: https://nickanthony-casting-agency-c.herokuapp.com/
+
+The backend server is live at: https://nickanthony-casting-agency.herokuapp.com/
 
 This project is the Capstone in the Udacity Full Stack Web Developer Nanodegree.
 I was hoping to leverage many of the different skills I learned in the course

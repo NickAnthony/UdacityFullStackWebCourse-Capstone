@@ -10,7 +10,6 @@ from flask import (
     abort,
     jsonify,
     request,
-    send_from_directory
 )
 from flask_cors import CORS
 from models import (
@@ -22,7 +21,7 @@ from models import (
 
 def create_app(test_config=None):
 
-    app = Flask(__name__, static_folder='frontend/build', static_url_path='')
+    app = Flask(__name__)
     setup_db(app)
     CORS(app)
 
@@ -37,7 +36,11 @@ def create_app(test_config=None):
 
     @app.route('/')
     def get_index():
-        return send_from_directory(app.static_folder, 'index.html')
+        return jsonify({
+                "welcome_message": "Welcome to Nick's Casting Agency Site!",
+                "frontend_url":
+                "https://nickanthony-casting-agency-c.herokuapp.com/"
+            })
 
     # ----------------------------------------------------------------------- #
     # Actor endpoints/routes.
