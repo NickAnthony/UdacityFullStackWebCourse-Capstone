@@ -16,7 +16,11 @@
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "eslint": "^7.27.0",
+    "eslint-config-eslint": "^7.0.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.23.2"
   },
   "scripts": {
     "start": "react-scripts start",
