@@ -5,7 +5,7 @@ import {
   noPortraitPlaceholder,
   noMoviePlaceholder,
 } from '../Constants.js';
-import {useParams} from 'react-router-dom';
+import {useParams, Redirect} from 'react-router-dom';
 import AppLoader from './AppLoader';
 import Thumbnail from './Thumbnail';
 import EditMovie from './EditMovie';
@@ -37,6 +37,7 @@ function MovieProfile() {
   const [fetchMovie, setFetchMovie] = useState(false);
   const [showAssociateActorDialog, setAssociateActorDiaglog] = useState(false);
   const [showEditMovieDialog, setShowEditMovieDialog] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     if (!fetchMovie) {
@@ -175,6 +176,63 @@ function MovieProfile() {
     });
   };
 
+  /**
+   * Confirm that the user wants to delete the movie.
+   */
+  const confirmDeleteMovie = async () => {
+    confirmAlert({
+      title: `Confirm to delete.`,
+      message: `Permanently delete ${movie.title}?`,
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => deleteMovie(),
+        },
+        {
+          label: 'No',
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
+  /**
+   * Permanently deletes the movie from the database.
+   * Opportunistically makes the delete, then rollbacks if it fails for some
+   * reason.  Only Executive Producers can delete movies.
+   */
+  const deleteMovie = async () => {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience: `casting-agency`,
+        scope: 'read:current_user',
+      });
+      fetch(`${DOMAIN}/movies/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.success) {
+              console.log(result);
+              setRedirect(true);
+            } else {
+              editMovieFailed(result.message, movie);
+            }
+          });
+    } catch (e) {
+      console.log(e.message);
+      editMovieFailed(e.message, movie);
+    }
+  };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
+
   if (!movie) {
     return <AppLoader />;
   }
@@ -225,10 +283,9 @@ function MovieProfile() {
                       onClick={() => setShowEditMovieDialog(true)}>
                       Edit
                     </button>
-                    { /* TODO Implement: Delete */ }
                     <button
                       className="Button Profile-menu-button-delete"
-                      onClick={() => {}}>
+                      onClick={() => confirmDeleteMovie()}>
                       Delete
                     </button>
                   </div>
