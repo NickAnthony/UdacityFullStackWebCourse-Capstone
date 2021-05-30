@@ -5,7 +5,7 @@ import {
   noPortraitPlaceholder,
   noMoviePlaceholder,
 } from '../Constants.js';
-import {useParams} from 'react-router-dom';
+import {useParams, Redirect} from 'react-router-dom';
 import AppLoader from './AppLoader';
 import Thumbnail from './Thumbnail';
 import AssociateActorWithMovie from './AssociateActorWithMovie';
@@ -27,11 +27,15 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 function ActorProfile() {
   const {id} = useParams();
   const {isAuthenticated, getAccessTokenSilently} = useAuth0();
+
+  // Set up state
   const [actor, setActor] = useState(null);
   const [movies, setMovies] = useState([]);
   const [fetchActor, setFetchActor] = useState(true);
   const [showAssociateMovieDialog, setAssociateMovieDiaglog] = useState(false);
   const [showEditActorDialog, setShowEditActorDialog] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+
 
   useEffect(() => {
     if (fetchActor) {
@@ -171,6 +175,64 @@ function ActorProfile() {
     });
   };
 
+  /**
+   * Confirm that the user wants to delete the actor/actress.
+   */
+  const confirmDeleteActor = async () => {
+    confirmAlert({
+      title: `Confirm to delete.`,
+      message: `Permanently delete ${actor.name}?`,
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => deleteActor(),
+        },
+        {
+          label: 'No',
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
+  /**
+   * Permanently deletes the actor/actress from the database.
+   * Opportunistically makes the delete, then rollbacks if it fails for some
+   * reason.  Only Executive Producers and Casting Directors can delete actors
+   * or actresses.
+   */
+  const deleteActor = async () => {
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience: `casting-agency`,
+        scope: 'read:current_user',
+      });
+      fetch(`${DOMAIN}/actors/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.success) {
+              console.log(result);
+              setRedirect(true);
+            } else {
+              editActorFailed(result.message, actor);
+            }
+          });
+    } catch (e) {
+      console.log(e.message);
+      editActorFailed(e.message, actor);
+    }
+  };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
+
   if (!actor) {
     return <AppLoader />;
   }
@@ -215,10 +277,9 @@ function ActorProfile() {
                       onClick={() => setShowEditActorDialog(true)}>
                       Edit
                     </button>
-                    { /* TODO Implement: Delete */ }
                     <button
                       className='Button Profile-menu-button-delete'
-                      onClick={() => {}}>
+                      onClick={() => confirmDeleteActor()}>
                       Delete actor
                     </button>
                   </div>
