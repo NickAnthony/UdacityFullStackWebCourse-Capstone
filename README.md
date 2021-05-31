@@ -25,11 +25,10 @@ process.
 
 ## Frontend
 
-The frontend of this app is a react application.  Please see the frontend/README
-for more information.
+The frontend of this app is a react application.  Please see the
+[`frontend/README.md`](frontend/README.md) for more information.
 
-
---
+---
 
 ## Models
 

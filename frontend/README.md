@@ -1,8 +1,8 @@
 # UdacityFullStackWebCourse-Capstone Frontend
 
 UdacityFullStackWebCourse Capstone Project frontend, which provides a UI to
-interact with the backend server.  Please see `../README.md` for more
-information on the backend.
+interact with the backend server.  Please see [`.../README.md`](`../README.md`)
+for more information on the backend.
 
 The frontend app client is live at:
 https://nickanthony-casting-agency-c.herokuapp.com/
