@@ -2,7 +2,8 @@
 
 UdacityFullStackWebCourse Capstone Project.
 
-The app client is live at: https://nickanthony-casting-agency-c.herokuapp.com/
+The frontend app client is live at:
+https://nickanthony-casting-agency-c.herokuapp.com/
 
 The backend server is live at: https://nickanthony-casting-agency.herokuapp.com/
 
@@ -20,6 +21,15 @@ within the company and are creating a system to simplify and streamline your
 process.
 
 ---
+
+
+## Frontend
+
+The frontend of this app is a react application.  Please see the frontend/README
+for more information.
+
+
+--
 
 ## Models
 
