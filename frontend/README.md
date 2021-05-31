@@ -1,7 +1,7 @@
 # UdacityFullStackWebCourse-Capstone Frontend
 
 UdacityFullStackWebCourse Capstone Project frontend, which provides a UI to
-interact with the backend server.  Please see [`.../README.md`](`../README.md`)
+interact with the backend server.  Please see [`../README.md`](../README.md)
 for more information on the backend.
 
 The frontend app client is live at:
